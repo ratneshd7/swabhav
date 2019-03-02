@@ -1,3 +1,8 @@
 ->create one repository folder
 ->open the repository folder with gitbash and type 
-   git int
+   git init
+->after init perfform commit which perrform in 2 phase
+   1.git add .
+   2. git commit -m 'add comment-why r u perfforming commit'
+->to check log type and status perform git log and git status respectively
+->for next commit repeat whole step
