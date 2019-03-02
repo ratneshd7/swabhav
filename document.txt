@@ -1,1 +1,3 @@
-->create one repository folder 
+->create one repository folder
+->open the repository folder with gitbash and type 
+   git int
