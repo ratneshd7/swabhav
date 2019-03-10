@@ -1,6 +1,15 @@
 package com.techlabs.basic;
 
 public class TestOverloading {
+	public static void main(String[] args) {
+		printThis(10);
+		printThis(10.5);
+		printThis(10.5f);
+		printThis("Hello");
+		printThis(true);
+
+	}
+
 	private static void printThis(int x) {
 		System.out.println("Overloading 1");
 		System.out.println(x);
@@ -26,12 +35,4 @@ public class TestOverloading {
 		System.out.println(x);
 	}
 
-	public static void main(String[] args) {
-		printThis(10);
-		printThis(10.5);
-		printThis(10.5f);
-		printThis("Hello");
-		printThis(true);
-
-	}
 }

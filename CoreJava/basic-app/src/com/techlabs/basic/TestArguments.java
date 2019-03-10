@@ -1,6 +1,6 @@
 package com.techlabs.basic;
 
-public class TestOrguments {
+public class TestArguments {
 	public static void main(String[] args) {
 		if (args.length == 0)
 			System.out.println("No Argument has been passed");
