@@ -1,12 +1,12 @@
 package com.demo.oddeven.test;
 
 import java.util.Scanner;
-import com.demo.oddeven.OddEven;
+import com.demo.oddeven.OddEvenPrinter;
 
-public class OddEvenTest {
+public class OddEvenPrinterTest {
 
 	public static void main(String[] args) {
-		OddEven oddeven = new OddEven();
+		OddEvenPrinter oddeven = new OddEvenPrinter();
 		Scanner sc = new Scanner(System.in);
 		oddeven.setNumber(sc.nextInt());
 

@@ -2,7 +2,7 @@ package com.demo.oddeven;
 
 import java.util.Scanner;
 
-public class OddEven {
+public class OddEvenPrinter {
 	private int number;
 
 	public int getNumber() {
