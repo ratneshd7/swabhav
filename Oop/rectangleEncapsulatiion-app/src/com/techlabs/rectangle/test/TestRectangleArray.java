@@ -12,7 +12,7 @@ public class TestRectangleArray {
 		array[2] = new Rectangle();
 		array[3] = new Rectangle();
 		array[4] = new Rectangle();
-
+                                                  
 		array[0].setHeight(10);
 		array[1].setHeight(20);
 		array[2].setHeight(30);
