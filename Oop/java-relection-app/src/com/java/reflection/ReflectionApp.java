@@ -2,23 +2,35 @@ package com.java.reflection;
 
 public class ReflectionApp {
 	private String name;
-	public int t;
+	private int height;
+	private int width;
 	//final ReflectionApp s;
 
 	public String getName() {
 		return name;
 	}
 
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public ReflectionApp(){
+		
+	}
 	public ReflectionApp(String s) {
 		this.name=s;
-	}
-
-	public void area() {
-		System.out.println("Area");
-	}
-
-	public int sayHii() {
-		return 1;
 	}
 
 }
