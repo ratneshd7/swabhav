@@ -10,7 +10,7 @@ public class OddEvenPrinterTest {
 		Scanner sc = new Scanner(System.in);
 		oddeven.setNumber(sc.nextInt());
 
-		oddeven.printEven(oddeven.getNumber());
-		oddeven.printOdd(oddeven.getNumber());
+		oddeven.printEven();
+		oddeven.printOdd();
 	}
 }

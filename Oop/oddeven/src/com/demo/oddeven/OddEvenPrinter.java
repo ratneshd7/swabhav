@@ -13,7 +13,7 @@ public class OddEvenPrinter {
 		this.number = number;
 	}
 
-	public void printEven(int number) {
+	public void printEven() {
 		// TODO Auto-generated method stub
 		System.out.println("Even Numbers are:");
 		for(int count=0;count<=number;count++){
@@ -22,7 +22,7 @@ public class OddEvenPrinter {
 		}
 	}
 
-	public void printOdd(int number) {
+	public void printOdd() {
 		// TODO Auto-generated method stub
 		System.out.println("Odd Numbers are:");
 		for(int count=0;count<=number;count++){
