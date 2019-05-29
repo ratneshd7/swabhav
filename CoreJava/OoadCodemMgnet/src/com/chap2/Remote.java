@@ -4,7 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Remote {
-	private  DogDoor door;
+	private DogDoor door;
 
 	public Remote(DogDoor door) {
 		this.door = door;
@@ -12,25 +12,21 @@ public class Remote {
 
 	public void pressButton() {
 		System.out.println("Pressing the remote control button");
-		if(door.isOpen())
+		if (door.isOpen())
 			door.close();
-		else{
-			
+		else {
+
 			door.open();
-			//adding timer
-			final Timer timer=new Timer();
-			timer.schedule(
-				new TimerTask() {
-			@Override
+			// adding timer
+			final Timer timer = new Timer();
+			timer.schedule(new TimerTask() {
+				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-				door.close();
-				timer.cancel();
+					door.close();
+					timer.cancel();
 				}
-			},5000);
+			}, 5000);
 		}
-		
 	}
-	
-
 }
