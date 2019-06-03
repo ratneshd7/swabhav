@@ -12,11 +12,11 @@ import java.util.Scanner;
 import javax.xml.stream.util.StreamReaderDelegate;
 
 public class WebLoader implements Loader {
-	String link;
+	String fileName;
 
-	public WebLoader(String link) {
+	public WebLoader(String filelink) {
 		// TODO Auto-generated constructor stub
-		this.link = link;
+		this.fileName = filelink;
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class WebLoader implements Loader {
 		String data;
 		try {
 			BufferedReader in = new BufferedReader(
-					new InputStreamReader(new URL(link).openConnection().getInputStream()));
+					new InputStreamReader(new URL(fileName).openConnection().getInputStream()));
 			while ((data = in.readLine()) != null) {
 				line = line+data+"\n";
 			}

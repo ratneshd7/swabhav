@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class DiskLoader implements Loader {
-	String link;
+	String fileName;
 
-	public DiskLoader(String link2) {
+	public DiskLoader(String filename) {
 		// TODO Auto-generated constructor stub
-		this.link = link2;
+		this.fileName = filename;
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class DiskLoader implements Loader {
 		String data;
 		String line ="";
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(link));
+			BufferedReader br = new BufferedReader(new FileReader(fileName));
 
 			while (true) {
 				data = br.readLine();

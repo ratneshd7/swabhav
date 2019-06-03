@@ -7,14 +7,18 @@ import org.junit.Test;
 import com.techlabs.unit.Calculator;
 
 public class TestEvenCube {
-
+	Calculator cal=new Calculator();
+	long output=0;
 	@Test
-	public void test() {
+	public void test_Even_Cube_no() {
 		//fail("Not yet implemented");
-		Calculator cal=new Calculator();
-		long output=cal.cubeEvenNo(4l);
-		assertEquals(64, output);
-		
+		try{
+			output=cal.cubeEvenNo(4l);
+			assertEquals(64, output);
+		}
+		catch(Exception Message){
+			assertEquals("passed No is not even", Message.getMessage());	
+		}
 	}
 
 }

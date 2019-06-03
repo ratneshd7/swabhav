@@ -51,7 +51,7 @@ public class DataAnalyzer {
 	public HashMap<String, Integer> getDesignwiseEmpl() {
 		// TODO Auto-generated method stub
 		HashMap<String, Integer> design = new HashMap<>();
-		int value=0;
+		int value = 0;
 		for (Employee employee : employees) {
 			if (design.containsKey(employee.getEmpdesignation())) {
 				value = design.get(employee.getEmpdesignation());
@@ -60,7 +60,7 @@ public class DataAnalyzer {
 			} else
 				design.put(employee.getEmpdesignation(), 1);
 		}
-		
+
 		return design;
 	}
 
