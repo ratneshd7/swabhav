@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css\bootstrap.css">
+</head>
+
+<body class="container">
+    <div id="banner" class="jumbotron">
+        <h1 id="para">Welcome To jQuery!</h1>
+
+        <ul class="list-group">
+            <li class="list-group-item">us</li>
+            <li class="list-group-item">india</li>
+            <li class="list-group-item">ratnesh</li>
+        </ul>
+        <button id="buttton" class="btn">Slide
+
+        </button>
+    </div>
+    <script src="jquery-3.4.1.min.js">
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#para').css('color', 'red')
+
+            $('div').css('border', '3px solid black')
+            $('#buttton').click(function (e) {
+                $('#para').slideUp(1000)
+                    .slideDown(1000)
+                $('li').css('color', 'blue')
+                    .attr('title', 'mytitle')
+                    .slideUp(1000)
+                    .slideDown(1000)
+                $('div').animate({ left: '250px' });
+            })
+
+            $('#para1').click(function () {
+                $('#para1').animate({
+                    left: '250px',
+                    opacity: '0.5',
+                    height: '150px',
+                    width: '150px',
+                    fontSize: '3em'
+                });
+            })
+
+        })
+    </script>
+
+</body>
+
+</html>

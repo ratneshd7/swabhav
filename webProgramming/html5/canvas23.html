@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <body>
+            <canvas id="piechart" width="400" height="400">
+                </canvas>
+
+                <script>
+                    var c =document.getElementById("piechart");
+                    var ctx = c.getContext("2d");
+                            ctx.beginPath();
+                            ctx.arc(100, 100, 50, 0.5 * Math.PI, 1.5 * Math.PI, false);
+                            ctx.fillStyle = "rgb(255, 0, 0)";
+                            ctx.fill();
+                            ctx.closePath();
+                            ctx.stroke();
+                            ctx.beginPath();
+                            ctx.arc(100, 100, 50, 1.5 * Math.PI,0.5 * Math.PI, false);
+                            ctx.fillStyle = "rgb(0,0,255)";
+                            ctx.fill();
+                            ctx.stroke();
+
+                    var data = [270, 940];
+                    var colors = ["rgb(255, 0, 0)", "rgb(0,0,255)"];  
+                    for (var i = 0; i < data.length; i++) {
+                         drawSegment(c, ctx, i);
+                        }  
+                        function drawSegment(c, context, i) {
+                            context.save();
+                            var centerX = Math.floor(c.width / 2);
+                            var centerY = Math.floor(c.height / 2);
+                            radius = Math.floor(c.width / 2);
+
+                            var startingAngle = degreesToRadians(sumTo(data, i));
+                            var arcSize = degreesToRadians(data[i]);
+                            var endingAngle = startingAngle + arcSize;
+
+                            context.beginPath();
+                            context.moveTo(centerX, centerY);
+                            context.arc(centerX, centerY, radius, 
+                                        startingAngle, endingAngle, false);
+                            context.closePath();
+
+                            context.fillStyle = colors[i];
+                            context.fill();
+
+                            context.restore();
+
+                           // drawSegmentLabel(c, context, i);
+                        }
+                        function degreesToRadians(degrees) {
+                            return (degrees * Math.PI)/180;
+                        }
+                        function sumTo(a, i) {
+                            var sum = 0;
+                            for (var j = 0; j < i; j++) {
+                            sum += a[j];
+                            }
+                            return sum;
+                        }    
+
+                </script>
+
+    </body>
+</html>

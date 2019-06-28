@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="student">
+    <div ng-controller="studentController">
+
+        <p>{{students.id+" "+students.name+" "+students.cgpa}}</p>
+        <img ng-src="{{students.image}}" alt="">
+        <img ng-hide="isHidden" src="spinner.gif">
+    </div>
+ 
+    <script src="angular.js"></script>
+
+    <script>
+        angular.module('student', [])
+            .controller('studentController',['$scope', '$timeout', function ($scope, $timeout) {
+
+                $scope.callAtTimeout = function () {
+
+                    $scope.students = {
+                        "id": 1,
+                        "name": "Ratnesh",
+                        "cgpa": 8.03,
+                        "image": "image.jpg"
+
+                    }
+                    $scope.isHidden = false;
+                }
+                $timeout(function () {
+
+                    $scope.callAtTimeout();
+                    $scope.isHidden = true;
+                }, 3000);
+            }])
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <script>
+        console.log(cubeEvenNo(2));
+        asyncCubeEvenNo(4).then(function (result) {
+            console.log(result)
+        })
+            .catch(function (error) {
+                console.log(error)
+            })
+        function cubeEvenNo(no) {
+            if (no % 2 == 0)
+                return no * no * no;
+            else
+                throw "Not an Even No"
+        }
+
+        function asyncCubeEvenNo(no) {
+            return new Promise(function (resolve, reject) {
+                if (no % 2 == 0)
+                    resolve(no * no * no)
+                else
+                    reject({ error: "Not an Even No" })
+            })
+        }
+        console.log("end of script")
+
+    </script>
+
+</body>
+
+</html>

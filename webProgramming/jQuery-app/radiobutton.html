@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div>
+                <input type="radio" name="gender" value="male">Male 
+                <input type="radio" name="gender" value="female">Female
+        </div>
+        <script src="jquery-3.4.1.min.js">
+        </script>
+
+        <script>
+            $(document).ready(function(){
+                $('div').change(function(){
+                    console.log($("input[name='gender']:checked").val())
+                })
+            })
+        </script>
+    </body>
+</html>

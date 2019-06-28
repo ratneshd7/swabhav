@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+    Text:<input type="text" id="textbox"><span>&nbsp;</span>FontSize:<input type="number" id="numberbox"><br><br>
+    Background:<select id="bgcolor"></select><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    foreground:<select id="fgcolor"></select>
+
+
+    <p id="textparagraph" style="font-size : normal"></p>
+
+    <script>
+
+        var paragraph = document.getElementById("textparagraph");
+        var dropdowncolor = [{
+            colorname: "select",
+            colorvalue: "select"
+        },
+        {
+            colorname: "Red",
+            colorvalue: "#ffbcbc"
+
+        },
+        {
+            colorname: "Blue",
+            colorvalue: "#b6ccef"
+
+        },
+        {
+            colorname: "Green",
+            colorvalue: "#84f986"
+
+        }
+        ]
+
+        var bgcolorpicker = document.querySelector("#bgcolor")
+        makeoption(bgcolorpicker);
+        var fgcolorpicker = document.querySelector("#fgcolor")
+        makeoption(fgcolorpicker);
+
+        function makeoption(selecttag) {
+            for (var i = 0; i < dropdowncolor.length; i++) {
+                var coloroption = document.createElement('option')
+                coloroption.text = dropdowncolor[i].colorname;
+                coloroption.value = dropdowncolor[i].colorvalue;
+                coloroption.id = "coloroption" + i;
+                selecttag.appendChild(coloroption);
+            }
+
+        }
+
+        bgcolorpicker.addEventListener('change', function () {
+            document.body.style.backgroundColor = this.value;
+        })
+        fgcolorpicker.addEventListener('change', function () {
+            paragraph.style.color = this.value;
+        })
+
+        document.querySelector("#textbox").addEventListener('input', function () {
+            paragraph.innerHTML = this.value;
+        })
+
+        document.querySelector("#numberbox").addEventListener('click', function () {
+            var fonts = this.value;
+            paragraph.style.fontSize = fonts + "px"
+        })
+
+
+    </script>
+</body>
+
+</html>

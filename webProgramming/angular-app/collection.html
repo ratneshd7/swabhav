@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <body ng-app="student">
+        <div ng-controller="studentController">
+            <button ng-click="load()">LoadData</button>
+            <p ng-repeat="data in students">{{data.id+" "+data.name+" "+data.cgpa}}
+                <img ng-src="{{data.image}}" alt="">
+            </p>
+
+        </div>
+        <script src="angular.js"></script>
+
+        <script>
+            angular.module('student', [])
+                .controller('studentController', ['$scope',function ($scope) {
+
+                    $scope.load = function () {
+                        $scope.students = [{
+                            "id": 1,
+                            "name": "Ratnesh",
+                            "cgpa": 8.03,
+                            "image": "image.jpg"
+                        }, {
+                            "id": 2,
+                            "name": "Meet",
+                            "cgpa": 7.03,
+                            "image": "image.jpg"
+                        }, {
+                            "id": 3,
+                            "name": "Shree",
+                            "cgpa": 9.03,
+                            "image": "image.jpg"
+                        }]
+                    }
+                }])
+        </script>
+
+    </body>
+
+</html>

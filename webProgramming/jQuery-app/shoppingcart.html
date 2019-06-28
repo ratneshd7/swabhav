@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="css\bootstrap.css"> -->
+    <script src="jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+    <div>
+
+        Products:<select name="products" id="product"></select>
+        Quantity: <input type="number" id="quantity">
+        <button id="button">Add</button>
+        <div id="tab">
+            <table id="list" cellspacing="0px" cellpadding="20px" text-align="center" border="1px">
+                <thead>
+                    <tr>
+                        <td>Id</td>
+
+                        <td>Name</td>
+                        <td>Quantity</td>
+                        <td>price</td>
+                        <td>cost</td>
+
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div>
+        <p id="para"></p>
+    </div>
+</body>
+
+<script>
+    $(document).ready(shoppingcart);
+
+    function shoppingcart() {
+        createDropdown();
+    }
+
+    var quantity = 0;
+
+    var Products = [{
+        'id': 1,
+        'modelname': 'iphone5',
+        'price': 500000,
+        'quantity': quantity
+    },
+    {
+        'id': 2,
+        'modelname': 'iphone6',
+        'price': 600000,
+        'quantity': quantity
+    },
+    {
+        'id': 3,
+        'modelname': 'iphone7',
+        'price': 700000,
+        'quantity': quantity
+    }]
+
+    function createDropdown() {
+
+        for (var i = 0; i < Products.length; i++) {
+            var opt = Products[i].modelname + '-' + Products[i].price;
+            var el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            $('#product').append(el);
+
+        }
+        $('#button').click(takedata);
+
+    }
+
+    function takedata() {
+        var productname = $("#product").val()
+
+
+        var element = productname.split("-")
+
+        quantity = $("#quantity").val()
+        createtable(element[0], quantity);
+    }
+
+    function createtable(element, quantity) {
+        for (var i = 0; i < Products.length; i++) {
+            if (Products[i].modelname == element) {
+
+
+
+                $('table tr').each(function () {
+                    var value = $('td', this).eq(1).text();
+                    if (element = value) {
+                        $('#thead td').eq(2).html('quantity');
+                    }
+                });
+
+                var new_row = " ";
+                new_row += "<td>" + Products[i].id + "</td><td>" + Products[i].modelname + "</td><td>" + quantity + "</td><td>" + Products[i].price + "</td><td>" + Products[i].price * quantity + "</td><td><input type=\"button\" value=\"Delete\" id=\"Delete" + i + "\"></td>";
+                var tr = document.createElement('tr');
+                tr.innerHTML = new_row;
+                $('#list').append(tr);
+            }
+
+        }
+        calculatprice(4);
+    }
+
+    $("body").on("click", "input[value=Delete]", deletData)
+    function deletData() {
+        $(this).parents("tr").remove();
+
+    }
+    function calculatprice(index) {
+        {
+            var total = 0;
+            $('table tr').each(function () {
+                var value = parseInt($('td', this).eq(index).text());
+                if (!isNaN(value)) {
+                    total += value;
+                }
+            });
+            $("#para").html('');
+            $('#para').append('Total: ' + total);
+        }
+    }
+
+</script>
+
+</html>

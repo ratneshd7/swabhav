@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="mathserviceapp">
+    <div ng-controller="evenNoController">
+        Enter no: <input type="number" ng-model="getnumber">
+        <button ng-click="genEven()">Generate Even no</button><br>
+        <p ng-repeat="data in result ">{{data}}</p>
+    </div>
+    <div ng-controller="primeNoController">
+        Enter no: <input type="number" ng-model="getnumber">
+        <button ng-click="genPrime()">Generate Prime no</button><br>
+        <p ng-repeat="value in result ">{{value}}</p>
+    </div>
+   
+    <script src="angular.js"></script>
+    <script>
+        angular.module('mathserviceapp', [])
+            .factory('mathservice', ['$log', '$q','$rootScope',function ($log, $q,$rootScope) {
+                $log.log("inside service")
+
+                var factoryobject = {};
+                factoryobject.genEven = function (inputno) {
+                    var resultNumber = [];
+
+                   return $q(function (resolve, reject) {
+                        for (var i = 1; i <= inputno; i++) {
+                            if (i % 2 == 0)
+                                resultNumber.push(i)
+                        }
+                        if(i>=inputno)
+                        resolve(resultNumber);
+                        else
+                        reject("Function is not working")
+                    })
+                }
+                factoryobject.genPrime = function (inputno) {
+                    var resultNumber = [];
+                  return  $q(function (resolve, reject) {
+                    for (var i = 2; i <= inputno; i++) {
+                        var c = 0;
+                        for (var j = 1; j <= i; j++) {
+                            if (i % j == 0) {
+                                c++;
+                            }
+                        }
+
+                        if (c == 2) {
+                            resultNumber.push(i);
+                        }
+
+                    }
+                    if(i>=inputno)
+                        resolve(resultNumber);
+                        else
+                        reject("Function2 is not working")
+                    })
+                }
+                return factoryobject;
+
+            }]).controller('evenNoController',['$scope', 'mathservice' ,function ($scope, mathservice) {
+
+
+                $scope.genEven = function () {
+
+                    mathservice.genEven($scope.getnumber).then(function (result) {
+                        $scope.result=result;
+                    }).catch(function (error) {
+                        console.log(error)
+                    })
+                }
+                console.log("end of evenController")
+            }]).controller('primeNoController', ['$scope', 'mathservice',function ($scope, mathservice) {
+
+                $scope.genPrime = function () {
+
+                    mathservice.genPrime($scope.getnumber).then(function (result) {
+                        $scope.result=result;
+                    }).catch(function (error) {
+                        console.log(error)
+                    })
+                }
+                console.log("end of primeController")
+            }])
+    </script>
+</body>
+
+</html>

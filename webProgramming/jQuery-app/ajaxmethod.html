@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div>
+        <button style="display: inline-block">Send an HTTP POST request</button>
+    </div>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("button").click(function () {
+                $.post("demo_post.asp",
+                    {
+                        name: "Ratnesh",
+                        city: "mumbai"
+                    },
+                    function (data, status) {
+                        alert("Data: " + data + "\nStatus: " + status);
+                    });
+            })
+        })
+    </script>
+</body>
+
+</html>

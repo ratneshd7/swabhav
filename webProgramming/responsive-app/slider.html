@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css\bootstrap.css">
+</head>
+
+<body class="container">
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="1" class="slider" id="sliderRange">
+        <p id="paragraph" ></p>
+        <p id="buttonvalue">Clicked Button Value is:<span id="spanid">&nbsp;</span></p>
+    </div>
+    <style>
+        
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+        .btn {
+            padding: 15px 32px;
+            border-radius: 50%;
+        }
+    </style>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#sliderRange").on('input', function () {
+                $("#paragraph").html(this.value);
+
+                for (var i = 1; i <= this.value; i++) {
+                    $("#paragraph").append($('<button/>', {
+                        class:'btn btn-success btn-circle btn-lg',
+                        text: i, //set text 1 to 10
+                        id: 'btn_' + i,
+                        click: clickhandler
+                    }))
+                }
+            })
+            function clickhandler() {
+                console.log("your clicked button no is=" + event.target.textContent)
+                $("#spanid").text(event.target.textContent)
+            }
+        })
+    </script>
+</body>
+
+</html>

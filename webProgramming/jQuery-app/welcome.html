@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div id="banner">
+        <p id="para">Welcome To jQuery!</p>
+        <button id="buttton">Slide
+
+        </button>
+        <ul>
+            <li>us</li>
+            <li>india</li>
+            <li>ratnesh</li>
+        </ul>
+        
+    </div>
+    <p id="para1">Welcome To jQuery!</p>
+    <script src="jquery-3.4.1.min.js">
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#para').css('color', 'red')
+            
+            $('div').css('border', '3px solid black')
+            $('#buttton').click(function (e) {
+                $('#para').slideUp(1000)
+                    .slideDown(1000)
+                $('li').css('color', 'blue')
+                    .attr('title', 'mytitle')
+                    .slideUp(1000)
+                    .slideDown(1000)
+                $('div').animate({ left: '250px' });
+            })
+
+            $('#para1').click(function () {
+                $('#para1').animate({
+                    left: '250px',
+                    opacity: '0.5',
+                    height: '150px',
+                    width: '150px',
+                    fontSize: '3em'
+                });
+            })
+
+        })
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <button id="button">click</button>        
+    </body>
+    <script>
+         var button= document.querySelector("#button")
+        button.addEventListener('click',function(e){
+         var x=e.clientX;
+         var y=e.clientY;
+         console.log("X-axis"+x+" "+"Y-axis"+y);
+         console.log(e.target.textContent)  
+        })
+    </script>
+</html>

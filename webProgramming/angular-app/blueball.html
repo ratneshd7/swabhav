@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="blueballgame">
+    <div ng-controller="gamecontroller">
+        <div ng-show="gamerules">
+            <button ng-click="onGame()" class="button">Start</button>
+            <p>
+                <br><br> ******* Rules ********<br><br>
+                *default color of the ball is grey<br><br>
+                *You have to Recognize blue ball<br><br>
+                *you have only 5 attempts<br><br>
+                *red color indicate your guesse value is less than actual value<br><br>
+                *blue color indicate your guess value is greater than actual value<br><br>
+                *you have only 60 seconds to guess<br><br>
+            </p>
+        </div>
+        <div ng-show="isBalls">
+            <div class="wrapper">
+                <h3 id="counter" ng-show="countDown_text > 0">Time Left Are: {{countDown_text}}</h3>
+                <h3 ng-show="countDown_text == 0">Your CountDown is expired!.</h3>
+                <h3 id="attempts">Your Remaining Attempts Are: {{attempts}}</h3>
+            </div>
+            <button ng-repeat="value in list(50) track by $index" class="btn" ng-click="disableButton($event)"
+                id="{{$index}}" ng-style="btnbgcolor{{$index}}">{{$index}}</button>
+        </div>
+        <div ng-hide="isOver">
+            <p style="background-color: chartreuse">{{result}}</p>
+        </div>
+    </div>
+    <style>
+        .wrapper {
+            text-align: right;
+
+        }
+
+
+
+        .btn {
+
+            width: 80px;
+            height: 80px;
+            line-height: 50px;
+            border: 1px solid;
+            border-radius: 50%;
+            text-align: center;
+            margin: 10px;
+            background: #dfd3d3;
+            font-size: 20px;
+            font-weight: bold;
+            float: left;
+            background: gray;
+        }
+
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .center {
+            text-align: center;
+            display: block;
+        }
+    </style>
+    <script src="angular.js"></script>
+    <script>
+        angular.module('blueballgame', []).controller('gamecontroller', ['$scope', '$parse', '$timeout', '$window',function ($scope, $parse, $timeout, $window) {
+
+
+            $scope.gamerules = true;
+
+            $scope.onGame = function () {
+                $scope.gamerules = false
+                $scope.isBalls = true;
+                $scope.attempts = 5
+                $scope.randomNumber = Math.floor(Math.random() * (50))
+                console.log($scope.randomNumber)
+                var countDowner, countDown = 60;
+                countDowner = function () {
+                    if (countDown < 0) {
+
+                        countDown = 0;
+                        gameOver();
+                        // $scope.gamerules = true
+                        // $scope.isBalls = false;// quit//else use return
+                    } else {
+                        $scope.countDown_text = countDown; // update scope
+                        countDown--; // -1
+                        $timeout(countDowner, 1000); // loop it again
+                    }
+                }
+
+                $scope.countDown_text = countDown;
+                countDowner()
+            }
+            $scope.disableButton = function (disableButtonIndex) {
+                $scope.attempts--
+                disableButtonIndex.target.disabled = true;
+                var btnid = disableButtonIndex.target.id;
+
+                var btnstring = "btnbgcolor" + btnid
+                var change = $parse(btnstring)
+
+                if (btnid == $scope.randomNumber) {
+                    disableButtonIndex.target.disabled = false
+                    change.assign($scope, {
+                        "background": 'blue',
+                        "value": 'Winner'
+                    })
+                    disableButtonIndex.target.id.value = "winner"
+                    // alert("Winner")
+
+                    $timeout(function () {
+
+                        
+                        showresult();
+                        
+                    }, 3000)
+                    function showresult(){
+                        $scope.isBalls = false;
+                        $scope.isOver=false;
+                        $scope.result="Winner"
+                    $timeout(function () {
+                        
+                        $scope.isOver=true;
+                        gameOver();
+
+                    }, 3000)
+                    }
+
+                }
+                else if (btnid > $scope.randomNumber) {
+                    change.assign($scope, {
+                        "background": 'red'
+                    })
+                }
+                else if (btnid < $scope.randomNumber) {
+                    change.assign($scope, {
+                        "background": 'green'
+                    })
+                }
+
+                if ($scope.attempts == 0) {
+                    gameOver();
+                }
+
+                function gameOver() {
+
+                    countDown = 0;
+                    $scope.countDown_text = countDown
+                    $scope.gamerules = true
+                    $scope.isBalls = false;
+                    $window.location.reload();
+                }
+
+            }
+
+
+
+            $scope.list = function (slidervalue) {
+                return new Array(slidervalue);
+            }
+
+        }])
+    </script>
+</body>
+
+</html>

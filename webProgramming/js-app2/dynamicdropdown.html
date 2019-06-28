@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <select id="dynamicDropdown"></select>
+
+    <script>
+        
+        var dropdowncolor = [   {colorname:"select",
+                                 colorvalue: "select"
+                                },
+                                {
+                                    colorname:"Red",
+                                    colorvalue:"#ffbcbc"
+
+                                },
+                                {
+                                    colorname: "Blue" ,
+                                    colorvalue:"#b6ccef"
+
+                                },
+                                {
+                                    colorname:"Green"  ,
+                                    colorvalue:"#84f986"
+
+                                }
+                                 ]
+
+        var colorpicker = document.querySelector("#dynamicDropdown")
+
+         for (var i = 0; i < dropdowncolor.length; i++) {
+            var option = document.createElement('option')
+            option.text = dropdowncolor[i].colorname;
+            option.value = dropdowncolor[i].colorvalue;
+            option.id = "option" + i;
+            colorpicker.appendChild(option);
+        }
+
+        document.getElementById('dynamicDropdown').addEventListener('change', function () {
+            document.body.style.backgroundColor = this.value;
+        });
+    </script>
+</body>
+
+</html>

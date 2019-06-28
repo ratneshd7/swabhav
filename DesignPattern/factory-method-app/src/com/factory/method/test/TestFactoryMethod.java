@@ -1,6 +1,7 @@
 package com.factory.method.test;
 
 import java.io.FileReader;
+import java.lang.reflect.Method;
 import java.util.Properties;
 
 import com.factory.method.IAutomobile;
@@ -13,24 +14,26 @@ public class TestFactoryMethod {
 
 		try {
 			String class1 = loadFactoryFromFile();
-			System.out.println(class1);
-			System.out.println(Class.forName(class1));
+			
+			Method method=Class.forName(class1).getMethod("getInstatnce",new Class[0]);
+			
+			//System.out.println(class1);
+			//System.out.println(Class.forName(class1));
 			IAutomobileFactory factory = null;
-			factory= (IAutomobileFactory)Class.forName("com.factory.method.BmwFactory").newInstance();
-		//	factory = (IAutomobileFactory) Class.forName(class1).newInstance();
-			System.out.println(factory);
+			//factory = (IAutomobileFactory) Class.forName("com.factory.method.BmwFactory").newInstance();
+			// factory = (IAutomobileFactory)
+			// Class.forName(class1).newInstance();
+			
+		factory=(IAutomobileFactory)method.invoke("getInstance");
+			
+		//	System.out.println(factory);
 			IAutomobile auto = factory.make();
-			System.out.println(auto);
+		//	System.out.println(auto);
 			auto.star();
 			auto.stop();
 			// System.out.println(auto.getClass().getSimpleName());
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

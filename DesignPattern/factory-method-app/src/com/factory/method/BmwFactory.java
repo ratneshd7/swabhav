@@ -8,7 +8,7 @@ public class BmwFactory implements IAutomobileFactory{
 	@Override
 	public IAutomobile make() {
 		// TODO Auto-generated method stub
-		getInstatnce();
+		//getInstatnce();
 		if(automobile==null)
 			return  new Bmw();
 		return  automobile;

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <!-- <div>
+        Enter:<input type="text" id="test">
+    </div> -->
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        var h ;
+        var add = function (x, y) {
+            return new Promise((resolve, reject) => {
+                var sum = x + y;
+                if (sum) {
+                    resolve(sum);
+                    console.log(sum)
+                }
+                else {
+                    reject(Error("Could not add the two values!"));
+                }
+            });
+        };
+        
+        add(2,2);
+        add(4,2)
+        console.log("end of script")
+    </script>
+</body>
+
+</html>

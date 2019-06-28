@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css\bootstrap.css">
+</head>
+
+<body class="container">
+    <div id="main">
+        <div class="jumbotron text-center">
+            <h1>Question Bank</h1>
+        </div>
+        <div id="first" style="text-align: center; border: 2px solid;font-weight: bold;font-size: 36px" class="panel panel-default">
+            <button id="startbtn" class="myButton" style=" display: inline-block">Start</button>
+
+            <p id="questions" style="font-weight: bold;font-size: 36px"></p>
+            <p id="option" style="font-size: 24px"></p>
+            <div>
+                <button id="prevbtn" class="myButton" style="display: none">Previous</button> <span>&nbsp;&nbsp;</span>
+                <button id="nextbtn" class="myButton" style="display: none; ">Next</button>
+                <button id="resultbtn" class="myButton" style="display: none">Result</button>
+            </div>
+
+
+        </div>
+    </div>
+    <style>
+        .myButton {
+            background-color: #44c767;
+            -moz-border-radius: 18px;
+            -webkit-border-radius: 18px;
+            border-radius: 18px;
+            border: 1px solid #18ab29;
+
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Arial;
+            font-size: 15px;
+            padding: 16px 31px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #2f6627;
+        }
+
+        .myButton:hover {
+            background-color: #5cbf2a;
+        }
+
+        .myButton:active {
+            position: relative;
+            top: 1px;
+        }
+    </style>
+    <script src="jquery-3.4.1.min.js"></script>
+    <!-- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
+    <script>
+        $(document).ready(function () {
+            var answer = [];
+            var count = -1;
+            var answercount = 0;
+            var rightAnswer = 0;
+
+            var questionArray = [{
+                id: 1,
+                question: "What is 2*5?",
+                options: [2, 5, 10, 15],
+                correctAnswer: 2
+            }, {
+                id: 2,
+                question: "What is 3*6?",
+                options: [3, 6, 9, 18],
+                correctAnswer: 3
+            }, {
+                id: 3,
+                question: "What is 8*9?",
+                options: [72, 99, 108, 134],
+                correctAnswer: 0
+            }, {
+                id: 4,
+                question: "What is 1*7?",
+                options: [4, 5, 6, 7],
+                correctAnswer: 3
+            }, {
+                id: 5,
+                question: "What is 3*8?",
+                options: [20, 30, 24, 50],
+                correctAnswer: 2
+            }]
+
+
+
+            // $('#first').css({
+
+            //     'display': 'block',
+
+            //     'border': '1px solid #000',
+            //     'width': '500px',
+            //     'height': '300px',
+            //     'margin': '5 %',
+            //     'padding': '15 %'
+            // })
+
+            $('#startbtn').click(function () {
+                $('#startbtn').css('display', 'none')
+                count++
+                questionPicker();
+                $('#nextbtn').css('display', 'inline-block')
+                $('#prevbtn').css('display', 'inline-block')
+            })
+            $('#nextbtn').click(function () {
+                count++
+                questionPicker();
+                $('input:radio[class=myrdb][id=radioid' + answer[count] + ']').prop('checked', true)
+
+            })
+
+            $('#option').change(function () {
+                console.log($("input[name='radiobtn']:checked").val())
+                answer[count] = $("input[name='radiobtn']:checked").val()
+                //answercount++;
+                console.log(answer)
+            })
+
+            function questionPicker() {
+
+                if (count < 5) {
+                    $("#option").html("");
+
+                    var questintext = questionArray[count].id + " " + questionArray[count].question
+                    $('#questions').text(questintext)
+                    for (var i = 0; i < questionArray[count].options.length; i++) {
+
+                        $("#option").append($("<input type='radio' id='radioid" + i + "' class='myrdb' name='radiobtn' value='" + i + "'/>"
+                        )).append('<b>' + questionArray[count].options[i] + '</b><br><br>')
+
+                    }
+
+                }
+                else {
+                    $('#startbtn').css('display', 'none')
+                    $('#nextbtn').css('display', 'none')
+                    $('#prevbtn').css('display', 'none')
+                    $('#resultbtn').css('display', 'inline-block')
+                }
+            }
+            $('#prevbtn').click(function () {
+                if (count == 0 || count == -1) {
+                    count = 0;
+                    questionPicker();
+                }
+                else {
+                    count = count - 1
+
+                    // answercount--;
+                    questionPicker();
+                    // for (var i = 0; i < questionArray[count].options.length; i++) {
+                    //     if()
+                    $('input:radio[class=myrdb][id=radioid' + answer[count] + ']').prop('checked', true)
+                    // }
+                }
+            })
+
+            $('#resultbtn').click(function () {
+                $("#first").html("");
+                for (var i = 0; i < questionArray.length; i++) {
+                    if (questionArray[i].correctAnswer == answer[i])
+                        rightAnswer++
+                }
+                var wrong = i - rightAnswer;
+                $("#first").append("Correct answer are: " + rightAnswer + '</br>' + "Wrong Answer Are: " + wrong);
+
+
+            })
+
+        })
+    </script>
+</body>
+
+</html>

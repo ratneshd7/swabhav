@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <select id="staticdropdown" onchange="colorchange(body,value)">
+        <option>select</option>
+        <option value="#e02508">Red</option>
+        <option value="#75a8f9">Blue</option>
+        <option value="#06e006">Green</option>
+    </select>
+
+    <select id="DynamicdropDown"></select>
+    <script>
+
+
+        var color = ['select', '#ffbcbc', '#b6ccef', '#84f986']
+        var colorname = ['select', 'Red', 'Blue', 'Green']
+        var x = document.querySelector("#DynamicdropDown")
+
+
+
+        for (var i = 0; i < color.length; i++) {
+            var option = document.createElement('option')
+            option.text = colorname[i];
+            option.value = color[i];
+            option.id = "option" + i;
+            x.appendChild(option);
+        }
+
+        document.getElementById('DynamicdropDown').addEventListener('change', function () {
+            document.body.style.backgroundColor = this.value;
+        });
+
+
+        function colorchange(body, color) {
+            body.style.backgroundColor = color;
+        }
+
+    </script>
+</body>
+
+</html>

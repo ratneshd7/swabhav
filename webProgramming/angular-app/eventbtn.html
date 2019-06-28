@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="student">
+    <div ng-controller="studentController">
+        <button ng-click="load()">LoadData</button>
+        <p>{{students.id+" "+students.name+" "+students.cgpa}}</p>
+        <!-- <p>Id:{{id}}<br>Name:{{name}}<br>CGPA:{{cgpa}}</p>
+        <img alt="" src="{{image}}" /> -->
+        <img ng-src="{{students.image}}" alt="">
+    </div>
+
+    <script src="angular.js"></script>
+
+    <script>
+        //whenever controller created the DI happend $scope
+        angular.module('student', [])
+            .controller('studentController',['$scope', function ($scope) 
+            {
+
+                $scope.load = function () {
+                    // $scope.id = 1;
+                    // $scope.name = "Ratnesh";
+                    // $scope.cgpa = 8.03;
+                    // $scope.image="image.jpg"
+                    // console.log("Student")
+                    $scope.students = {
+                        "id": 1,
+                        "name": "Ratnesh",
+                        "cgpa": 8.03,
+                        "image": "image.jpg"
+                    }
+                }
+            }])
+    </script>
+</body>
+
+</html>

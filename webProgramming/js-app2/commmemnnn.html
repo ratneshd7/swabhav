@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    Enter Comment:<input type="text" id="textbox">
+    <p id="textparagraph"></p>
+
+    <script>
+
+        var comment;
+        var commentData1 = [];
+        var comment2
+        var paragraph = document.querySelector("#textparagraph");
+
+        document.querySelector("#textbox").addEventListener("keypress", function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                addData();
+               // displayData();
+            }
+
+        });
+
+        function addData() {
+            let storage = JSON.parse(localStorage.getItem('comments'))
+            comment = document.getElementById("textbox").value;
+            
+             if (comment == ' ') {
+                alert("null");
+            }
+            else {
+                if (storage == null) {
+                    commentData1.push(comment);
+                    localStorage.setItem('comments', JSON.stringify(commentData));
+                    length++;
+                }
+                else {
+                   // length = localStorage.length;
+                    commentData1=JSON.parse(localStorage.getItem('comments'))
+                   // commentData.country = 'IN'
+                   commentData1.push(comment);
+                    localStorage.setItem('comments', JSON.stringify(commentData1))
+                }
+            }
+            displayData(commentData1);
+        }
+        var commentparagraph = document.getElementById("textparagraph");
+        commentData1 = JSON.parse(localStorage.getItem('comments'))
+        function deletePara() {
+            var nvalue = this.value
+            console.log(this.value)
+           // commentData = JSON.parse(localStorage.getItem('comments'))
+            commentData1.splice(nvalue, 1)
+            console.log(commentData1.length)
+            displayData(commentData1)
+
+        }
+
+        function displayData(comment2) {
+            commentparagraph.innerHTML = " "
+           // comment2 = JSON.parse(localStorage.getItem('comments'))
+           document.getElementById("textparagraph").innerHTML+=comment2.length
+            var str = "";
+            if (comment2 != null)
+                for (var i = comment2.length - 1; i >= 0; i--) {
+                    var crossbutton = document.createElement('button')
+                    crossbutton.type = 'button'
+                    crossbutton.id = "button" + i;
+                    crossbutton.value = i;
+                    crossbutton.textContent = 'X'
+                    crossbutton.onclick = deletePara;
+
+                    var text = document.createTextNode(comment2[i])
+                    text.id = "text" + i;
+                    var para = document.createElement('p')
+                    commentparagraph.appendChild(para)
+                    commentparagraph.appendChild(text)
+                    commentparagraph.appendChild(crossbutton)
+
+                }
+        }
+
+       displayData(JSON.parse(localStorage.getItem('comments')));
+    </script>
+
+
+
+</body>
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // function display(commentData) {
+        //     commentparagraph.innerHTML = " "
+        //     document.getElementById("textparagraph").innerHTML+=commentData.length
+        //     if (commentData != null)
+        //         for (var i = commentData.length - 1; i >= 0; i--) {
+        //             var crossbutton = document.createElement('button')
+        //             crossbutton.type = 'button'
+        //             crossbutton.id = "button" + i;
+        //             crossbutton.value = i;
+        //             crossbutton.textContent = 'X'
+        //             crossbutton.onclick = deletePara;
+
+        //             var text = document.createTextNode(commentData[i])
+        //             text.id = "text" + i;
+        //             var para = document.createElement('p')
+        //             commentparagraph.appendChild(para)
+        //             commentparagraph.appendChild(text)
+        //             commentparagraph.appendChild(crossbutton)
+
+        //         }
+        // }

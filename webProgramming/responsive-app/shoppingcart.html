@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css\bootstrap.css">
+    <script src="jquery-3.4.1.min.js"></script>
+</head>
+
+<body class="container text-center">
+    <div>
+        <h1 class="jumbotron ">Shopping Cart</h1>
+    </div>
+    <div>
+        <b>Select Product:</b> <select name="productname" id="productid"></select>
+        <b> Enter Quantity:</b> <input type="number" id="quantity">
+        <button id="addButton" class="btn btn-success">AddToCart</button> <br>
+        <div>
+            <table id="cart" class="table table-bordered"
+                style="visibility:hidden; width:100%;background-color: coral;font-weight: bold;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Cost</th>
+                        <th>Total Cost</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="cartBody">
+
+                </tbody>
+            </table>
+        </div><br>
+        <div>
+            <button id="calculateprice" style="visibility:hidden" class="btn btn-info">CalculateTotalPrice</button>
+        </div> <br>
+        <div>
+            <p id="para" style="font-weight: bold"></p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(shoppingcart)
+
+        function shoppingcart() {
+            createOptions();
+        }
+
+        var cart = [];
+        var Products = [{
+
+            'modelname': 'iphone5',
+            'price': 50000,
+            'quantity': 0
+
+        },
+        {
+
+            'modelname': 'iphone6',
+            'price': 60000,
+            'quantity': 0
+        },
+        {
+
+            'modelname': 'iphone7',
+            'price': 70000,
+            'quantity': 0
+        }]
+
+        function createOptions() {
+            for (var i = 0; i < Products.length; i++) {
+                var opt = Products[i].modelname + '-' + Products[i].price;
+                var el = document.createElement("option");
+                el.textContent = opt;
+                el.value = opt;
+                $('#productid').append(el);
+
+            }
+        }
+        $("#addButton").click(addToCart)
+        var count = 0;
+        function addToCart() {
+            $("#para").css("visibility", "hidden");
+            var productname = $("#productid").val()
+            var element = productname.split("-")
+            var quantity = $("#quantity").val()
+            $("#quantity").val(null)
+            var id = cart.length + 1;
+            var modelname = element[0]
+            var price = element[1];
+            var flag = 0
+
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].modelname == element[0]) {
+                    cart[i].quantity = parseInt(cart[i].quantity) + parseInt(quantity);
+                    flag = 1;
+                    break;
+                }
+            }
+
+            if (flag == 0) {
+                for (var i = 0; i < Products.length; i++) {
+                    if (Products[i].modelname == element[0]) {
+
+                        cart[count] = {
+                            'id': id,
+                            'modelname': element[0],
+                            'price': element[1],
+                            'quantity': quantity
+                        }
+                        count++;
+                        break;
+                    }
+                }
+            }
+            showCart();
+        }
+
+        function showCart() {
+            if (cart.length == 0) {
+                $("#cart").css("visibility", "hidden");
+                $("#para").css("visibility", "hidden");
+                $("#calculateprice").css("visibility", "hidden");
+                return;
+            }
+
+            $("#cart").css("visibility", "visible");
+            $("#calculateprice").css("visibility", "visible");
+            $("#cartBody").empty();
+            
+            for (var i in cart) {
+                var item = cart[i];
+                var row = "<tr><td>" + item.id + "</td><td>" + item.modelname + "</td><td>" +
+                    item.quantity + "</td><td>" + item.price + "</td><td>" +
+                    item.quantity * item.price + "</td><td>"
+                    + "<button onclick='deleteItem(" + i + ")' class='btn btn-danger'>Delete</button></td></tr>";
+                $("#cartBody").append(row);
+            }
+        }
+        function deleteItem(index) {
+            cart.splice(index, 1);
+            showCart();
+            $("#para").css("visibility", "hidden");
+            
+        }
+
+        $("#calculateprice").click(calculateTotalPrice);
+        function calculateTotalPrice() {
+            index = 4;
+            var total = 0;
+            $('table tr').each(function () {
+                var value = parseInt($('td', this).eq(index).text());
+                if (!isNaN(value)) {
+                    total += value;
+                }
+            });
+            $("#para").html('');
+            $('#para').append('Total Price: ' + total);
+            $("#para").css("visibility", "visible");
+        }
+    </script>
+
+</body>
+
+</html>

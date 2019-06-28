@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body ng-app="studentapp">
+    <div ng-controller="getcontroller">
+
+        <div class=" container-fluid " style="width: 350; border: 1px solid black; background-color:khaki">
+
+            <b> Name:</b> <span class="glyphicon glyphicon-pencil"></span> <input type="text" id="studentname" class="form-control" ng-model="studentname"><br><br>
+            <b>RollNo:</b><span class="glyphicon glyphicon-pencil"></span> <input type="number" id="studentrollno" class="form-control" ng-model="studentrollno"><br><br>
+            <b> Date:</b> <span class="glyphicon glyphicon-calendar"></span> <input type="date" id="studentdate" class="form-control" ng-model="studentdate"><br><br>
+            <b>Email Id:</b>  <span class="glyphicon glyphicon-envelope"></span><input type="email" class="form-control" ng-model="studentemail"><br><br>
+            <b> Age:</b><span class="glyphicon glyphicon-pencil"></span> <input type="number" id="studentage" class="form-control" ng-model="studentage"><br><br>
+            <b>Gender:</b><span class="glyphicon glyphicon-user"></span> <span>&nbsp;&nbsp;&nbsp;</span><input type="radio" ng-model="gendervalue" name="gender" ng-checked="m" value="male">Male
+            <input type="radio" ng-model="gendervalue" name="gender" ng-checked="f" value="female">Female
+            <br><button id="addbutton" ng-hide="isAdd" ng-click="adddata()"
+                style="display: inline-block"class="btn btn-success">ADD<span class="glyphicon glyphicon-plus"></span></button><span>&nbsp;</span></button><span>&nbsp;</span>
+            <button id="putdata"  ng-show="isUpdate" ng-click="update()" style="display: inline-block" class="btn btn-info btn-sm">Update</button><br><br>
+            <p id="notification" style="color: green">Number of student - {{length}}</p>
+            
+        </div>
+
+        <button class="btn btn-info" ng-click="loadData()">Load Data</button>
+        <table  class="table table-bordered table-striped table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>RollNo</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Gender</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+
+            <tbody class="table table-bordered">
+                <tr ng-repeat="data in result">
+                    <td>{{data.id}}</td>
+                    <td>{{data.rollNo}}</td>
+                    <td>{{data.name}}</td>
+                    <td>{{data.age}}</td>
+                    <td>{{data.email}}</td>
+                    <td>{{data.date|date: dd/mm/yyyy}}</td>
+                    <td>{{data.isMale| genderfilter}}</td>
+                    <!-- <td ng-if="data.isMale == 'true'">{{Male}}</td> -->
+                    <td><button id="{{data.id}}" ng-click="deleteData($event)" class="btn btn-info btn-sm">
+                        <p class="glyphicon glyphicon-trash"></p></button></td>
+                    <td><button id="{{data.id}}" ng-click="editData($event)" class="btn btn-info btn-sm">
+                        <p class="glyphicon glyphicon-edit"></p></button></td>
+                </tr>
+
+            </tbody>
+        </table>
+        <!-- <p ng-repeat="data in result">
+            {{data.id+" "+data.rollNo+" "+data.name+" "+data.age+" "+data.email+" "+data.date+" "+data.isMale}}</p>
+    </div> -->
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        angular.module('studentapp', [])
+            .factory('getservice', ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
+                var factoryobject = {};
+
+
+                factoryobject.getdata = function () {
+                    return $q(function (resolve, reject) {
+                        $http({
+                            method: 'GET',
+                            url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students"
+
+                        }).then(function success(response) {
+                            console.log(response.data)
+                            resolve(response.data);
+
+                        }), function error(response) {
+                            console.log(response)
+                            reject(response)
+                        }
+                    })
+                }
+
+                factoryobject.adddatas = function (studentname, studentrollno, studentemail, studentage, studentdate, studentgender) {
+                    return $q(function (resolve, reject) {
+                        var dataobj = {
+                            rollNo: studentrollno,
+                            name: studentname,
+                            email: studentemail,
+                            age: studentage,
+                            date: studentdate,
+                            isMale: studentgender
+                        }
+
+                        $http({
+                            method: 'POST',
+                            url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students",
+                            data: dataobj
+
+                        }).then(function success(response) {
+                            resolve(response.data);
+
+                        }), function error(response) {
+                            console.log(response)
+                            reject(response)
+                        }
+                    })
+                }
+
+                factoryobject.deleterow = function (id) {
+                    return $q(function (resolve, reject) {
+                        $http({
+                            method: 'DELETE',
+                            url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students/" + id
+
+                        }).then(function success(response) {
+                            resolve(response.data);
+
+                        }), function error(response) {
+                            reject(response)
+                        }
+                    })
+                }
+
+                factoryobject.retrieve = function (id) {
+
+                    return $q(function (resolve, reject) {
+                        $http({
+                            method: 'GET',
+                            url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students/" + id
+
+                        }).then(function success(response) {
+                            resolve(response.data);
+
+                        }), function error(response) {
+                            reject(response)
+                        }
+                    })
+
+                }
+                factoryobject.updatedata = function (id, studentname, studentrollno, studentemail, studentage, studentdate, studentgender) {
+
+                    return $q(function (resolve, reject) {
+                        var dataobj = {
+                            id: id,
+                            rollNo: studentrollno,
+                            name: studentname,
+                            email: studentemail,
+                            age: studentage,
+                            date: studentdate,
+                            isMale: studentgender
+                        }
+                        $http({
+                            method: 'PUT',
+                            url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students/" + id,
+                            data: dataobj
+
+                        }).then(function success(response) {
+                            resolve(response.data);
+
+                        }), function error(response) {
+                            reject(response)
+                        }
+                    })
+
+                }
+                return factoryobject;
+            }]).controller('getcontroller', ['$scope', '$rootScope', 'getservice', '$filter', function ($scope, $rootScope, getservice, $filter) {
+               $scope.length;
+                $scope.loadData = function () {
+                    getservice.getdata().then(function (result) {
+                        $scope.result = result
+                        $scope.length=result.length
+                        reset();
+                    })
+                }
+                $scope.adddata = function () {
+                    if($scope.studentname!=null && $scope.studentrollno!=null && $scope.studentemail !=null && $scope.studentage!=null){
+                    console.log($scope.studentname, $scope.studentrollno, $scope.studentdate, $scope.studentemail, $scope.studentage, $scope.gendervalue)
+                    if ($scope.gendervalue == "male")
+                        $scope.ismail = true
+                    else
+                        $scope.ismail = false
+                    getservice.adddatas($scope.studentname, $scope.studentrollno, $scope.studentemail, $scope.studentage, $scope.studentdate, $scope.ismail).then(function (result) {
+                        console.log(result)
+                        $scope.loadData()
+                        reset();
+                    })
+                    }
+                    else
+                    alert("pls fill the detail")
+                }
+
+                $scope.deleteData = function (event) {
+                    
+                    console.log(event.target.id)
+                    getservice.deleterow(event.target.id).then(function (result) {
+                        console.log(result)
+                        $scope.loadData()
+
+                        reset();
+
+                    })
+                }
+                $scope.index;
+                $scope.editData = function (event) {
+                    $scope.isUpdate=true;
+                    $scope.isAdd=true
+                    getservice.retrieve(event.target.id).then(function (result) {
+                        console.log(result[0].name)
+
+
+                        $scope.studentname = result[0].name
+                        $scope.studentrollno = result[0].rollNo
+
+                        var newDate = new Date(result[0].date);
+                        $scope.index = result[0].id
+                        $scope.studentdate = newDate
+                        $scope.studentemail = result[0].email
+                        $scope.studentage = result[0].age
+                        console.log(result[0].isMale)
+                        if (result[0].isMale == true){
+                            $scope.m = true
+                            $scope.f = false
+                        }
+                        else if (result[0].isMale == false)
+                            $scope.f = true
+                            $scope.m = false
+                    })
+                }
+
+                $scope.update = function () {
+                    $scope.isUpdate=false;
+                    $scope.isAdd=false
+                    if ($scope.gendervalue == "male")
+                        $scope.ismail = true
+                    else
+                        $scope.ismail = false
+                    getservice.updatedata($scope.index, $scope.studentname, $scope.studentrollno, $scope.studentemail, $scope.studentage, $scope.studentdate, $scope.ismail).then(function (result) {
+                        $scope.loadData()
+                         reset();
+                    })
+                }
+                function reset(){
+                    
+                        $scope.studentname = null
+                        $scope.studentrollno = null
+                        $scope.studentdate = null
+                        $scope.studentemail = null
+                        $scope.studentage = null
+                        $scope.gendervalue=null
+                }
+            }]) .filter("genderfilter", [function () {
+            return function (input) {
+                if (input == true) {
+                    return "Male";
+                }
+                else {
+                    return "Female";
+                }
+            }
+        }]);
+
+
+    </script>
+</body>
+
+</html>

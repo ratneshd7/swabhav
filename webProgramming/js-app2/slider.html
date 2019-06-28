@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="1" class="slider" id="sliderRange">
+        <p id="paragraph"></p>
+        <p id="buttonvalue">Clicked Button Value is:<span id="spanid" >&nbsp;</span></p>
+    </div>
+<style>
+    .buttons{
+        padding:15px 32px;
+    }
+</style>
+    <script>
+        var slidervalue = document.querySelector("#sliderRange");
+        var generatebutton=document.querySelector("#paragraph") ;
+        slidervalue.addEventListener('input', function () {
+            document.getElementById("paragraph").innerHTML = this.value
+            
+            slidervalue.value=this.value;
+
+            for(var i=1;i<=this.value;i++)
+            {
+                var button =document.createElement('button')
+                button.id="button"+i;
+                button.innerHTML=i;
+                button.class='buttons'
+                button.onclick=clickhandler;
+                generatebutton.appendChild(button)
+               
+            }
+            // for(var j=1;j<=this.value;j++){
+            //     document.getElementById("button"+j).addEventListener('click',function(){
+            //         // if(event.target.id==("button"+j))
+            //     console.log("you clicked on button no="+this.innerHTML)
+            //     })
+            // }
+        })
+        function clickhandler(event){
+            console.log("your clicked button no is="+event.target.textContent)
+            document.getElementById("spanid").innerHTML=event.target.textContent
+
+        }
+
+        
+    </script>
+</body>
+
+</html>

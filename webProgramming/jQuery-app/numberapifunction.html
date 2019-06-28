@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <div id="div1">
+        Number: <input type="number" id="number">
+        <button id="search" style="display: inline-block">Search</button>
+        <p id="response"></p>
+        <div id="loader"><img src="spinner.gif" /></div>
+    </div>
+
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var number;
+            var loading = $('#loader').hide();
+            $(document)
+                .ajaxStart(function () {
+                    loading.show();
+                })
+                .ajaxStop(function () {
+                    loading.hide();
+                });
+
+            $("#search").click(function () {
+                number = $("#number").val()
+
+                getFacts(number).then(function (result) {
+                    console.log(result)
+                    $("#response").append(result + '<br>');
+
+                })
+                .catch(function (error) {
+                console.log(error)
+            })
+
+                function getFacts(number) {
+                    return new Promise(function (resolve, reject) {
+
+                        $.ajax({
+                            url: "http://www.numbersapi.com/" + number, dataType: 'jsonp',
+
+                            success: function (result) {
+                                $("#loader").hide();
+                                resolve(result)
+                                // $("#response").append(result + '<br>');
+                              },
+                            error: function(errordata){
+                                reject({error:"No is not find"})
+                            }
+                        })
+
+                    })
+                }
+            })
+
+        })
+
+    </script>
+</body>
+
+</html>

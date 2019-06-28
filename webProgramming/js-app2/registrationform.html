@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login Form </title>
+
+</head>
+
+<body>
+    <div id="container">
+        <div class="main">
+            <h2>User Registration Form</h2>
+            <form id="form_id" method="post" name="myform">
+                <label>User Name :</label>
+                <input type="text" name="username" id="username" />
+                <label>Password :</label>
+                <input type="password" name="password" id="password" />
+                <label>Confirm Password :</label>
+                <input type="password" name="confirmpassword" id="confirmpassword" />
+                <input type="button" value="Register" id="register" />
+            </form>
+        </div>
+    </div>
+    <div id="container2">
+        <div class="main2">
+            <h2>User Login Form</h2>
+            <label>User Name :</label>
+            <input type="text" name="username" id="username2" />
+            <label>Password :</label>
+            <input type="password" name="password" id="password2" />
+            <input type="button" value="Login" id="submit" />
+        </div>
+    </div>
+    <div id="wrapper">
+        Add task:<input type="text" id="textbox">
+
+        <p id="para"></p>
+    </div>
+    <div id="users">
+        <p id="loginuser" style="float: right"></p>
+    </div>
+    <style>
+        h2 {
+            background-color: #FEFFED;
+            padding: 30px 35px;
+            margin: -10px -50px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+
+        #container {
+
+            width: 900px;
+            height: 610px;
+
+            font-family: 'Raleway', sans-serif;
+            display: block;
+        }
+
+        #container2 {
+
+            width: 300px;
+            height: 610px;
+            position: absolute;
+            top: 0;
+            right: 0px;
+
+            /* padding: 10px 50px 25px; */
+            font-family: 'Raleway', sans-serif;
+            display: block;
+            margin-right: 10px;
+
+        }
+
+        .main2 {
+            width: 300px;
+            padding: 10px 50px 25px;
+            border: 2px solid gray;
+            border-radius: 10px;
+            font-family: raleway;
+            float: right;
+            margin-top: 50px;
+
+        }
+
+        .main {
+            width: 300px;
+            padding: 10px 50px 25px;
+            border: 2px solid gray;
+            border-radius: 10px;
+            font-family: raleway;
+            float: left;
+            margin-top: 50px;
+        }
+
+        #wrapper {
+            display: none;
+            width: 300px;
+            height: 610px;
+        }
+
+        #users {
+            position: absolute;
+            top: 0;
+            right: 0px;
+        }
+
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            height: 40px;
+            padding: 5px;
+            margin-bottom: 25px;
+            margin-top: 5px;
+            border: 2px solid #ccc;
+            color: #4f4f4f;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        label {
+            color: #464646;
+            text-shadow: 0 1px 0 #fff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .back {
+            text-decoration: none;
+            border: 1px solid rgb(0, 143, 255);
+            background-color: rgb(0, 214, 255);
+            padding: 3px 20px;
+            border-radius: 2px;
+            color: black;
+        }
+
+        input[type=button] {
+            font-size: 16px;
+            background: linear-gradient(#ffbc00 5%, #ffdd7f 100%);
+            border: 1px solid #e5a900;
+            color: #4E4D4B;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            padding: 10px 0;
+            outline: none;
+        }
+
+        input[type=button]:hover {
+            background: linear-gradient(#ffdd7f 5%, #ffbc00 100%);
+        }
+    </style>
+    <script>
+        var username = document.querySelector("#username")
+        var password = document.querySelector("#password")
+        var username2 = document.querySelector("#username2")
+        var password2 = document.querySelector("#password2")
+        var confirmpassword = document.querySelector("#confirmpassword")
+        var login = document.querySelector("#submit")
+        var register = document.querySelector("#register")
+        var currentuserstatus = 0;
+        var swabhavtask = [];
+        var swabhavtasknew = [];
+        var index = 0;
+
+        register.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (validate()) {
+                document.getElementById("container").style.display = "none";
+                document.getElementById("container2").style.display = "block";
+                document.getElementById("wrapper").style.display = "none";
+                addtask(e);
+                alert("you are successfully registered, Now pls login")
+
+            }
+            else
+                alert("Entered password are invalid")
+        });
+
+
+        login.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm(e)) {
+                document.getElementById("container").style.display = "none";
+                document.getElementById("container2").style.display = "none";
+                document.getElementById("wrapper").style.display = "block";
+
+
+                displayTask(e);
+            }
+            else
+                alert("You are not a valid user Please Register First")
+
+        });
+
+        var cnfirmpass = confirmpassword.value;
+        var name = username.value;
+        var pass = password.value;
+
+        function validate() {
+            if (password.value == confirmpassword.value) {
+                return true;
+            }
+
+        }
+
+        swabhavtask = JSON.parse(localStorage.getItem('swabhav.user'))
+        function addtask(e) {
+            name = username.value;
+            pass = password.value;
+            obj = {
+                'id': swabhavtask.length + 1,
+                'name': name,
+                'pass': pass,
+                'task': [],
+                'currentuser': currentuserstatus
+
+            }
+            swabhavtask.push(obj)
+            localStorage.setItem('swabhav.user', JSON.stringify(swabhavtask))
+
+        }
+
+
+        function displayTask() {
+            document.getElementById("para").innerHTML="";
+            swabhavtasknew = JSON.parse(localStorage.getItem('swabhav.user'))
+            for (var i = 0; i < swabhavtasknew.length; i++) {
+                console.log(username2.value)
+                console.log(password2.value)
+                
+               // var str = "";
+               if(swabhavtasknew[i].task.length==0)
+               break;
+                 if ((swabhavtasknew[i].name == username2.value) && (swabhavtasknew[i].pass == password2.value)) {
+                    for (var j = 0; j < swabhavtasknew[i].task.length; j++) {
+                        document.getElementById("para").innerHTML += swabhavtasknew[i].task[j] + '<br>'
+                    }
+                }
+            }
+
+        }
+
+
+        function confirm(e) {
+            swabhavtasknew = JSON.parse(localStorage.getItem('swabhav.user'))
+            for (var i = 0; i < swabhavtasknew.length; i++) {
+                console.log(username2.value)
+                console.log(password2.value)
+                if ((swabhavtasknew[i].name == username2.value) && (swabhavtasknew[i].pass == password2.value)) {
+                    document.getElementById("loginuser").innerHTML += "Loged User:" + swabhavtasknew[i].name + '<button id="button' + i + '" onclick="logout()">LogOut</button>';
+                    index = i;
+                    var store = JSON.parse(localStorage.getItem('swabhav.user'))
+                    var arr = 1;
+
+                    store[index].currentuser = 1;
+                    localStorage.setItem("swabhav.user", JSON.stringify(store))
+
+                    return true;
+                }
+                else if (i < swabhavtasknew.length) {
+                    continue;
+                }
+                else {
+                    return false;
+                }
+
+            }
+        }
+
+        document.querySelector("#textbox").addEventListener('keypress', function (event) {
+            console.log(index)
+            if (event.keyCode == 13) {
+                var store = JSON.parse(localStorage.getItem('swabhav.user'))
+                var arr = [];
+                console.log("hello" + this.value)
+                for (var i = 0; i < store[index].task.length; i++) {
+                    arr[i] = store[index].task[i];
+                }
+                arr.push(this.value)
+                store[index].task = arr;
+                localStorage.setItem("swabhav.user", JSON.stringify(store))
+                displayTask()
+            }
+        })
+
+        var loginname;
+        var loginpass;
+
+        window.onload = load();
+        function load() {
+            var store = JSON.parse(localStorage.getItem('swabhav.user'))
+            for (var i = 0; i < store.length; i++) {
+                if (store[i].currentuser == 1) {
+                    loginname = store[i].name;
+                    loginpass = store[i].pass;
+                    username2.value = loginname;
+                    password2.value = loginpass;
+                    document.getElementById("submit").click();
+                }
+            }
+        }
+
+        function logout() {
+            alert("you are successfully loged out");
+            var store = JSON.parse(localStorage.getItem('swabhav.user'))
+           
+
+            store[index].currentuser = 0;
+            localStorage.setItem("swabhav.user", JSON.stringify(store))
+            window.location.href = "registrationform.html";
+
+
+        }
+// taskobj = {
+        //     'id': 1,
+        //     'name': name,
+        //     'pass': pass,
+        //     'task': [name, pass],
+        //     'taskArraycount': taskcount
+
+        // };
+
+    </script>
+</body>
+
+</html>

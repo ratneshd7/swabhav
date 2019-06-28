@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="multibindApp" ng-style="bgcolor">
+    <div ng-controller="displaycontroller">
+        Enter: <input type="text" ng-model="text"><br>
+        Font Size: <input type="text" ng-model="fontsize" ng-change="getSize()">
+        Select Background color:<select name="colorpick" ng-model="selectedcolor" ng-change="pickcolor()"
+            ng-options="selectedcolor.hex as selectedcolor.name for selectedcolor in colors "></select>
+        <p ng-style="size">{{text}}</p>
+    </div>
+
+</body>
+<script src="angular.js"></script>
+<script>
+    angular.module('multibindApp', []).controller('displaycontroller', ['$scope', '$rootScope',function ($scope, $rootScope) {
+
+
+        $rootScope.colors = [{
+            name: "Red",
+            hex: '#f48273'
+        },
+        {
+            name: "Blue",
+            hex: '#9cacfc'
+        },
+        {
+            name: "Green",
+            hex: '#9eff66'
+        }
+        ]
+        $scope.selectedcolor = '#f48273'
+        $scope.pickcolor = function () {
+            $rootScope.bgcolor = {
+                "background-color": $scope.selectedcolor
+            }
+        }
+        $scope.getSize = function () {
+            $scope.size = {
+                "font-size": $scope.fontsize
+            }
+        }
+    }])
+</script>
+
+</html>

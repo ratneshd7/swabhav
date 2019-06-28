@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="studentapp">
+    <div ng-controller="studentController">
+        <button ng-click="load()">LoadData</button>
+        <div ng-repeat="data in students">
+            <p>{{data.id+" "+data.name}}</p><br>
+            
+            <img ng-src="{{data.image}}" alt="">
+           
+            <p ng-style="{'background':'{{data.cgpa|cgpaFilter}}'}">{{data.cgpa}}</p>
+        </div>
+        <script src="angular.js"></script>
+        <script>
+            var studentmodule = angular.module('studentapp', [])
+
+            studentmodule.filter('cgpaFilter', function () {
+
+                return function (studentsCgpa) {
+
+
+                    if (studentsCgpa < 8) {
+                        return 'red'
+                    }
+                    else if ((studentsCgpa > 8) && (studentsCgpa < 9)) {
+                        return 'yellow'
+                    }
+                    else if (studentsCgpa > 8) {
+                        return 'green'
+                    }
+
+                }
+                })
+            studentmodule.controller('studentController',['$scope', function ($scope) {
+
+                $scope.load = function () {
+                    $scope.students = [{
+                        "id": 1,
+                        "name": "Ratnesh",
+                        "cgpa": 8.03,
+                        "image": "image.jpg"
+                    }, {
+                        "id": 2,
+                        "name": "Meet",
+                        "cgpa": 7.03,
+                        "image": "image.jpg"
+                    }, {
+                        "id": 3,
+                        "name": "Shree",
+                        "cgpa": 9.03,
+                        "image": "image.jpg"
+                    }]
+                }
+            }])
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <body onload="read()">
+            Add user:<input type="text" id="textbox">
+            <button id="add" >+Add</button>
+            <p id="para"></p>
+
+            </button>
+            <p id="textparagraph"></p>
+        <style>
+        
+        </style>
+        <script>
+            var name;
+            var names=[];
+            var names2;
+            var userTrr=document.getElementById("para");
+
+            document.querySelector("#add").addEventListener('click',(e)=>{
+                e.preventDefault();
+                create();
+                read();
+               // document.getElementById("textbox").value="";
+
+            })
+            var name="ratnesh"
+            var obj={
+                'name':name
+            }
+            function create(){
+                let storage=JSON.parse(localStorage.getItem('names'))
+                name=document.getElementById("textbox").value;
+                console.log(name)
+                if(name==''){
+                    alert("write the name")
+                }
+                else{
+                    if(storage==null){
+                        names.push(name)
+                        console.log("in"+name)
+                        localStorage.setItem('names',JSON.stringify(names));
+
+                    }else{
+                    names=JSON.parse(localStorage.getItem('names'))
+                    names.push(name);
+                    console.log("en"+name)
+                    localStorage.setItem('names',JSON.stringify(names)) 
+                    }
+                          
+                 }
+            }
+            function read(){
+                userTrr.innerHTML=""
+                names2=JSON.parse(localStorage.getItem('names'));
+                if(names2!=null){
+                    for(var i=0;i<names2.length;i++)
+                    {
+                        userTrr.innerHTML+='<div><p>User:"'+ names2[i]+'"</p><button  id="button'+i+'" onclick="update(this)">Update</button><button onclick="delete(this)">Delete</button></div>'
+                    }
+                }
+
+            }
+
+            function update(e){
+                console.log(e.id)
+                console.log("hii")
+            }
+        
+        </script>
+    </body>
+</html>

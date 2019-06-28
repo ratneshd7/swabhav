@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    Enter Comment:<input type="text" id="textbox">
+    <p id="textparagraph"></p>
+
+    <script>
+        var comment = [];
+        var count = 0;
+        document.querySelector("#textbox").addEventListener('keypress', function (event) {
+            if (13 == event.keyCode) {
+                comment[count] = this.value;
+                count++;
+                display(comment);
+             }
+
+        })
+
+        function deletePara(event){
+                //document.getElementById(this.value)
+                console.log(comment[this.value])
+                comment.splice(this.value,1)
+                display(comment);
+            }
+
+        function display(select) {
+            var count=select.length-1;
+            var para = "";
+            for (var i =  select.length-1; i >= 0; i--) {
+                para = para + "<p id=p" + count + "><button id=" + count + " onclick=deletePara();>X</button>" + select[count]+'<\p>';
+                count--;
+            }
+            document.getElementById("textparagraph").innerHTML = para;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="binding-app">
+
+    <div ng-controller="maincontroller">
+        <h1>One Way Binding</h1>
+       
+        <p>{{students.id+" "+students.name+" "+students.cgpa}}</p>
+
+    </div>
+
+    <div ng-controller="maincontroller">
+        <h1>Two Way Binding</h1>
+        Enter id: <input type="text" ng-model="students.id"><br>
+        Enter name: <input type="text" ng-model="students.name"><br>
+        Enter cgpa: <input type="text" ng-model="students.cgpa">
+        
+    </div>
+    <div ng-controller="maincontroller">
+        <h1>One Time Binding</h1>
+        <p>{{::students.id}}</p><br>
+        <p>{{::students.name}}</p><br>
+        <p>{{::students.cgpa}}</p>
+
+        
+    </div>
+
+
+
+    <script src="angular.js"></script>
+
+    <script>
+        angular.module('binding-app',[])
+            .controller('maincontroller',['$rootScope',function ($rootScope) {
+                
+                    $rootScope.students = {
+                        "id": 1,
+                        "name": "Ratnesh",
+                        "cgpa": 8.03,
+
+                    }
+                
+            }])
+
+
+    </script>
+</body>
+
+</html>

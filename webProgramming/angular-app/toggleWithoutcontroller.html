@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app>
+    <div >
+        <button  ng-init="isOn=true" ng-click="isOn=!isOn">On/Off</button><br>
+    
+        <img ng-show="isOn" ng-src="image.jpg">
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        /// <reference path="../typings/browser.d.ts" />
+        // angular.module('toggleApp', [])
+        //     .run(function ($rootScope) {
+        //         $rootScope.isOn = true
+        //         $rootScope.switch = function () {
+        //             $rootScope.image = "image.jpg";
+        //             $rootScope.isOn = $rootScope.isOn ? false : true;
+        //         };
+
+        //     })
+
+    </script>
+
+
+</body>
+
+</html>

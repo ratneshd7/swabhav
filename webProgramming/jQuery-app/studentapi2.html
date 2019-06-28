@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div id="div1" style="border: 1px">
+        <div class="center">
+
+            Name: <input type="text" id="studentname"><br><br>
+            RollNo: <input type="number" id="studentrollno"><br><br>
+            Date:<input type="date" id="studentdate"><br><br>
+            Email Id:<input type="email" id="studentemail"><br><br>
+            Age: <input type="number" id="studentage"><br><br>
+            Gender:<input type="radio" name="gender" id="Male" value="Male">Male
+            <input type="radio" id="Female" name="gender" value="Female">Female
+            <br><button id="addbutton" style="display: inline-block">ADD</button><span>&nbsp;</span> <button
+                id="putdata" style="display: inline-block">Update</button><br><br>
+            <p id="notification" style="color: green"></p>
+            <p id="notification1" style="color:red"></p>
+        </div>
+        <div id="loader"><img src="spinner.gif" /></div>
+        <button id="load" style="display: inline-block">LoadData</button>
+        <div id="tab">
+            <table id="list" cellspacing="0px" cellpadding="20px" text-align="center" border="1px">
+                <thead>
+                    <tr>
+                        <td>Id</td>
+                        <td>RollNo</td>
+                        <td>Name</td>
+                        <td>Age</td>
+                        <td>Email</td>
+                        <td>Date</td>
+                        <td>Gender</td>
+                        <td>Delete</td>
+                        <td>Edit</td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        var id;
+        $("#putdata").hide();
+        $(document).ready(apiDataHandler);
+        function apiDataHandler() {
+            var loading = $('#loader').hide();
+            $(document)
+                .ajaxStart(function () {
+                    loading.show();
+                })
+                .ajaxStop(function () {
+                    loading.hide();
+                });
+
+            $("#load").click(function () {
+                loadTable();
+            });
+
+            $("#addbutton").click(postData)
+            $("#putdata").click(putData)
+
+            function getData() {
+                studentname = $("#studentname").val();
+                studentrollno = $("#studentrollno").val();
+                studentemail = $("#studentemail").val();
+                studentage = $("#studentage").val();
+                studentdate = $("#studentdate").val();
+                if ($("input[name='gender']:checked").val() == "Male") {
+                    studentgender = true;
+                } else {
+                    studentgender = false;
+                }
+            }
+
+            function postData() {
+                getData();
+                if (studentname != '' && studentrollno != '' && studentemail != '' && studentage != '' && studentdate != '') {
+                    $("#notification").html("")
+                    $.post("http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students", {
+                        rollNo: studentrollno,
+                        name: studentname,
+                        email: studentemail,
+                        age: studentage,
+                        date: studentdate,
+                        isMale: studentgender
+                    },
+                        function (data) {
+                            console.log(data)
+                            $("#notification").append("Added Successfully" + '<br>')
+
+                            loadTable();
+                        })
+                }
+                else
+                    alert("fill details")
+
+                clearField();
+            }
+            function putData() {
+                $("#addbutton").show();
+                $("#putdata").hide();
+                getData();
+                clearField();
+                if (studentname != '' && studentrollno != '' && studentemail != '' && studentage != '' && studentdate != '') {
+                    $("#notification").html("")
+
+                    $.ajax({
+                        url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students/" + id,
+
+                        type: "PUT",
+                        data: {
+                            rollNo: studentrollno,
+                            name: studentname,
+                            email: studentemail,
+                            age: studentage,
+                            date: studentdate,
+                            isMale: studentgender
+                        },
+
+
+                        success: function (data) {
+                            loadTable()
+                        },
+                        error: function (status) {
+                            alert("data already deleted " + status);
+
+                        }
+                    })
+                }
+                else
+                    alert("fill details")
+            }
+            $("body").on("click", "input[value=Edit]", function () {
+                $("#addbutton").hide();
+                $("#putdata").show();
+                var row = $(this).parents("tr");
+                var item = row.find("td").first().text();
+                //  console.log(row.find("td:eq(6)").text())
+                id = item;
+
+
+                $("#studentname").val(row.find("td:eq(2)").text());
+                $("#studentdate").val(row.find("td:eq(5)").text());
+                $("#studentage").val(row.find("td:eq(3)").text());
+                $("#studentemail").val(row.find("td:eq(4)").text());
+                $("#studentrollno").val(row.find("td:eq(1)").text());
+                if (row.find("td:eq(6)").text() == "Male") {
+                    $('input[name="gender"][id="Male"]').prop('checked', true);
+                } else {
+                    $('input[name="gender"][id="Female"]').prop('checked', true);
+                }
+
+                $(this).parents("tr").find("td:eq(8)").prepend("<button class='btn btn-warning btn-xs btn-cancel'>Cancel</button>")
+                $(this).hide();
+
+                // $('input[name="gender"]').prop('checked', true)
+                // $('input:radio[class=myrdb][id=radioid'+answer[count]+']').prop('checked', true)
+
+            })
+            $("body").on("click", ".btn-cancel", function(){
+                clearField();
+                $(this).parents("tr").find("input[value=Edit]").show();
+                $(this).parents("tr").find(".btn-cancel").remove();
+                $("#addbutton").show();
+                $("#putdata").hide();
+            })
+            function clearField() {
+                $("#studentname").val('');
+                $("#studentdate").val('');
+                $("#studentage").val('');
+                $("#studentemail").val('');
+                $("#studentrollno").val('');
+                $('input[name="gender"]').prop('checked', false);
+            }
+
+            $("body").on("click", "input[value=Delete]", deletData)
+            function deletData() {
+                var row = $(this).parents("tr");
+                //console.log(row)
+                var item = row.find("td").first().text();
+                //console.log(item)
+                var flag = confirm("you r about to delete user detail of " + row.find("td:eq(2)").text())
+                if (flag) {
+                    $.ajax({
+                        url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students/" + item,
+                        type: "DELETE",
+                        contentType: 'application/json',
+                        success: function (data) {
+                            loadTable()
+                        },
+                        error: function (status) {
+                            alert("data already deleted " + status);
+
+                        }
+                    })
+                }
+            }
+            function loadTable() {
+
+                $.ajax({
+                    url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        createTable(data)
+                    },
+                    error: function (status) {
+                        alert(status);
+                    }
+                });
+
+            }
+
+            function createTable(data) {
+                var result = JSON.stringify(data)
+                var store = JSON.parse(result)
+                $("#notification1").html("")
+                $("#notification1").append("No Of Students Are " + store.length)
+                $("#list tbody tr").remove();
+                for (var i = 0; i < store.length; i++) {
+                    var Gender = "Male";
+                    if (store[i].isMale == false)
+                        Gender = "Female";
+                    var new_row = " ";
+                    new_row += "<td>" + store[i].id + "</td><td>" + store[i].rollNo + "</td><td>" + store[i].name + "</td><td>" + store[i].age + "</td><td>" + store[i].email + "</td><td>" + store[i].date + "</td><td>" + Gender + "</td><td><input type=\"button\" value=\"Delete\" id=\"Delete" + i + "\">" + "</td><td><input type=\"button\" value=\"Edit\" id=\"Edit" + i + "\"></td>";
+                    var tr = document.createElement('tr');
+                    tr.innerHTML = new_row;
+                    $('#list').append(tr);
+                }
+
+            }
+
+        }
+    </script>
+</body>
+
+</html>

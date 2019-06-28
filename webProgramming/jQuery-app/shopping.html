@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+    <div>
+        Select Product: <select name="productname" id="productid"></select>
+        Enter Quantity: <input type="number" id="quantity">
+        <button id="addButton">AddToCart</button>
+        <div>
+            <table id="cart" border="1" style="visibility:hidden; width:100%">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Cost</th>
+                        <th>Total Cost</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="cartBody">
+
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <button id="calculateprice" style="visibility:hidden">CalculateTotalPrice</button>
+        </div>
+        <div>
+            <p id="para"></p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(shoppingcart)
+
+        function shoppingcart() {
+            createOptions();
+        }
+
+        var cart = [];
+        var Products = [{
+
+            'modelname': 'iphone5',
+            'price': 50000,
+            'quantity': 0
+
+        },
+        {
+
+            'modelname': 'iphone6',
+            'price': 60000,
+            'quantity': 0
+        },
+        {
+
+            'modelname': 'iphone7',
+            'price': 70000,
+            'quantity': 0
+        }]
+
+        function createOptions() {
+            for (var i = 0; i < Products.length; i++) {
+                var opt = Products[i].modelname + '-' + Products[i].price;
+                var el = document.createElement("option");
+                el.textContent = opt;
+                el.value = opt;
+                $('#productid').append(el);
+
+            }
+        }
+        $("#addButton").click(addToCart)
+        var count = 0;
+        function addToCart() {
+
+            var productname = $("#productid").val()
+            var element = productname.split("-")
+            var quantity = $("#quantity").val()
+            $("#quantity").val(null)
+            var id = cart.length + 1;
+            var modelname = element[0]
+            var price = element[1];
+            var flag = 0
+
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].modelname == element[0]) {
+                    cart[i].quantity = parseInt(cart[i].quantity) + parseInt(quantity);
+                    flag = 1;
+                    break;
+                }
+            }
+
+            if (flag == 0) {
+                for (var i = 0; i < Products.length; i++) {
+                    if (Products[i].modelname == element[0]) {
+
+                        cart[count] = {
+                            'id': id,
+                            'modelname': element[0],
+                            'price': element[1],
+                            'quantity': quantity
+                        }
+                        count++;
+                        break;
+                    }
+                }
+            }
+            showCart();
+        }
+
+        function showCart() {
+            if (cart.length == 0) {
+                $("#cart").css("visibility", "hidden");
+                $("#para").css("visibility", "hidden");
+                $("#calculateprice").css("visibility", "hidden");
+                return;
+            }
+
+            $("#cart").css("visibility", "visible");
+            $("#calculateprice").css("visibility", "visible");
+            $("#cartBody").empty();
+
+            for (var i in cart) {
+                var item = cart[i];
+                var row = "<tr><td>" + item.id + "</td><td>" + item.modelname + "</td><td>" +
+                    item.quantity + "</td><td>" + item.price + "</td><td>" +
+                    item.quantity * item.price + "</td><td>"
+                    + "<button onclick='deleteItem(" + i + ")'>Delete</button></td></tr>";
+                $("#cartBody").append(row);
+            }
+        }
+        function deleteItem(index) {
+            cart.splice(index, 1);
+            showCart();
+            
+        }
+
+        $("#calculateprice").click(calculateTotalPrice);
+        function calculateTotalPrice() {
+            index=4;
+            var total = 0;
+            $('table tr').each(function () {
+                var value = parseInt($('td', this).eq(index).text());
+                if (!isNaN(value)) {
+                    total += value;
+                }
+            });
+            $("#para").html('');
+            $('#para').append('Total: ' + total);
+        }
+    </script>
+
+</body>
+
+</html>

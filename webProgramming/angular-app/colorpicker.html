@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="colorapp" ng-style="bgcolor">
+    <div ng-controller="colorcontroller" >
+        <select name="coloroption" id="colorpicker" ng-model="selectedcolor" ng-change="pickcolor()">
+            <option value="#f48273">Red</option>
+            <option value="#9eff66">Green</option>
+            <option value="#9cacfc">Blue</option>
+        </select>
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        angular.module('colorapp', []).controller('colorcontroller',['$rootScope', '$scope' ,function ($rootScope, $scope) {
+            $scope.selectedcolor = '#f48273';
+            $scope.pickcolor = function () {
+                $rootScope.bgcolor = {
+                    "background-color": $scope.selectedcolor
+                }
+            }
+        }])
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <div id="div1">
+        Number: <input type="number" id="number">
+        <button id="search" style="display: inline-block">Search</button> <span>&nbsp;&nbsp;</span>
+        <button id="toggle" style="display: inline-block">Red/Blue</button>
+        <p id="response"></p>
+        <div id="loader"><img src="spinner.gif" /></div>
+
+    </div>
+
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var loading = $('#loader').hide();
+            $(document)
+                .ajaxStart(function () {
+                    loading.show();
+                })
+                .ajaxStop(function () {
+                    loading.hide();
+                });
+
+            $("#search").click(function () {
+
+                $.ajax({
+                    url: "http://www.numbersapi.com/" + $("#number").val(), dataType: 'jsonp',
+
+                    success: function (result) {
+                        $("#loader").hide();
+                        $("#response").append(result + '<br>');
+                    }
+                })
+
+                var i = 0;
+                var color = ['#a3c6ff', '#ff899f']
+                $("#toggle").click(function () {
+                    i = i < color.length ? ++i : 0;
+                    // document.querySelector("body").style.background = color[i]
+                    $('body').css("background-color", color[i])
+
+                })
+            });
+
+        })
+        console.log("end Of Script")
+    </script>
+
+</body>
+
+</html>

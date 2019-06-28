@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="slider">
+    <div ng-controller="sliderController">
+        <input type="range" min="1" max="100" value="1" ng-model="sliderValue.value">
+        <p>{{sliderValue.value}}</p>
+    </div>
+
+    <script src="angular.js"></script>
+
+    <script>
+        angular.module('slider', []).controller('sliderController',['$scope', function ($scope) {
+            $scope.sliderValue={
+                value:1
+            }
+        }])
+    </script>
+</body>
+
+</html>

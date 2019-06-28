@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div class="center">
+        <h1>Customer Form</h1>
+        Customer Name : <input type="text" id="textbox">
+        <div id="radio">
+            Gender:
+            <input type="radio" name="gender" value="Male">Male
+            <input type="radio" name="gender" value="Female">Female
+            <input type="radio" name="gender" value="Other">Other
+        </div><br><br>
+        Credit Card Options : <select name="card" id="cardtype">
+            <option value="Master">Master</option>
+            <option value="Visa">Visa</option>
+            <option value="Amex">Amex</option>
+        </select><br><br>
+
+
+        <button id="addbutton">Add Customer Detail</button>
+        <div id="editbtn">
+
+        </div>
+    </div>
+    <div id="tablediv">
+        <h1>Customers Detail</h1>
+        <table id="tablelist" style="width:100%" border="1">
+            <!-- //border="1px" -->
+    </div>
+
+    <!-- 
+    <div id="tab">
+        <table id="list" cellspacing="0px" cellpadding="20px" text-align="center" border="1px">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Gender</td>
+                    <td>Card Type</td>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+        </table>
+    </div> -->
+
+    <script>
+        var textData = document.querySelector("#textbox");
+        var gendertype = document.getElementsByName("gender")
+        var cardtypes = document.querySelector("#cardtype")
+        
+        var count = 0;
+        var switchbtn = 1;
+        var Name = [];
+        var Gender = [];
+        var CreditCard = [];
+
+
+
+
+
+        function display() {
+
+// '<button id="deletebtn_id' + i + '"class="delete">Delete</button>
+var row = "<tr><td>Edit</td><td>Delete</td><td>name</td><td>Gender</td><td>Age</td><td>creditCard</td></tr>"
+for (var i = 0; i < count; i++) {
+    row = row + "<tr><td><button id=btn" + i + " onClick= editrow(this)>Edit</button></td><td><button id=deletebtn" + i + " onClick= deleterow(this)>X</button></td><td>" + Name[i] + "</td><td>" + Gender[i] + "</td><td>" + Age[i] + "</td><td>" + CreditCard[i] + "</td></tr>";
+
+}
+if (count == 0)
+    document.getElementById("tablelist").innerHTML = ""
+else
+    document.getElementById("tablelist").innerHTML = row
+
+}
+
+   

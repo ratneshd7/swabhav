@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <body ng-app="toggle">
+        <div ng-controller="toggleImg">
+            <button ng-click="switch()">On/Off</button><br>
+            <img ng-hide="isOn" ng-src="{{image}}">
+        </div>
+        <script src="angular.js"></script>
+        <script>
+            angular.module('toggle',[]).controller('toggleImg',['$scope',function($scope){
+                $scope.isOn=false
+                $scope.switch=function(){
+                   if( $scope.isOn==false){
+                    $scope.isOn=true;
+                    $scope.image="image.jpg";
+                   
+                   }
+                    else{
+                        $scope.isOn=false;
+                    }
+                }
+            }])
+        </script>
+    </body>
+</html>

@@ -11,7 +11,7 @@ package com.factory.method;
 
 	@Override
 	public void stop() {
-		System.out.println("Bmw Start");
+		System.out.println("Bmw Stop");
 	}
 
 }

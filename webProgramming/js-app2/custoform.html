@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div class="center">
+        <h1>Customer Form</h1>
+        Customer Name : <input type="text" id="textbox"><span id="span">&nbsp;&nbsp;</span> Age : <input type="text"
+            id="agebox"><br><br>
+        <div id="radio">
+            Gender:
+            <input type="radio" name="gender" value="Male">Male
+            <input type="radio" name="gender" value="Female">Female
+            <input type="radio" name="gender" value="Other">Other
+        </div><br><br>
+        Credit Card Options : <select name="card" id="cardtype">
+            <option value="Master">Master</option>
+            <option value="Visa">Visa</option>
+            <option value="Amex">Amex</option>
+        </select><br><br>
+
+
+        <button id="addbutton">Add Customer Detail</button>
+        <div id="editbtn">
+
+        </div>
+    </div>
+    <div id="tablediv">
+        <h1>Customers Detail</h1>
+        <table id="tablelist" style="width:100%" border="1">
+            <!-- //border="1px" -->
+    </div>
+
+    <!-- 
+    <div id="tab">
+        <table id="list" cellspacing="0px" cellpadding="20px" text-align="center" border="1px">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Gender</td>
+                    <td>Card Type</td>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+        </table>
+    </div> -->
+
+    <script>
+        var textData = document.querySelector("#textbox");
+        var gendertype = document.getElementsByName("gender")
+        var cardtypes = document.querySelector("#cardtype")
+        var agedetail = document.querySelector("#agebox")
+        var count = 0;
+        var switchbtn = 1;
+        var Name = [];
+        var Gender = [];
+        var CreditCard = [];
+        var Age = [];
+
+        document.querySelector("#addbutton").addEventListener('click', addDataIntable);
+
+        function addDataIntable() {
+
+            if (textData.value.length == 0) {
+                Name[count] = "Empty"
+            } else {
+                Name[count] =textData.value;
+            }
+            for (var i = 0; i < gendertype.length; i++) {
+                if (gendertype[i].checked == true) {
+                    Gender[count] = gendertype[i].value;
+
+                }
+            }
+           
+            if (agedetail.value.length == 0) {
+                Age[count] = "Empty"
+            } else {
+                Age[count] = agedetail.value;
+            }
+
+            CreditCard[count] = cardtypes.value;
+
+            if ((Name[count] != "Empty") && (Age[count] != null) && (CreditCard[count] != null) ) {
+                count++;
+                display();
+                textData.value = null;
+                gendertype[count-1].checked = false;
+                agedetail.value = null;
+                cardtypes.value = null;
+             }
+
+            //  Name[count] = textData.value;
+            // CreditCard[count] = cardtypes.value;
+            // Age[count] = agedetail.value;
+            // for (var i = 0; i < gendertype.length; i++) {
+            //     if (gendertype[i].checked == true) {
+            //         Gender[count] = gendertype[i].value;
+
+            //     }
+            // }
+
+            // if ((Name[count] != "Empty") && (Age[count] != null) && (CreditCard[count] != null) && (Gennder[count] != null)) {
+            //     count++;
+
+
+            // }
+            // count++;
+            // display();
+
+        }
+
+        function display() {
+
+            // '<button id="deletebtn_id' + i + '"class="delete">Delete</button>
+            var row = "<tr><td>Edit</td><td>Delete</td><td>name</td><td>Gender</td><td>Age</td><td>creditCard</td></tr>"
+            for (var i = 0; i < count; i++) {
+                row = row + "<tr><td><button id=btn" + i + " onClick= editrow(this)>Edit</button></td><td><button id=deletebtn" + i + " onClick= deleterow(this)>X</button></td><td>" + Name[i] + "</td><td>" + Gender[i] + "</td><td>" + Age[i] + "</td><td>" + CreditCard[i] + "</td></tr>";
+
+            }
+            if (count == 0)
+                document.getElementById("tablelist").innerHTML = ""
+            else
+                document.getElementById("tablelist").innerHTML = row
+
+        }
+
+        function deleterow(event) {
+            console.log(event.id)
+            console.log(count)
+            indexid = event.id
+            Name.splice(indexid, 1);
+            CreditCard.splice(indexid, 1)
+            Gender.splice(indexid, 1)
+            Age.splice(indexid, 1)
+            count--;
+            display();
+        }
+
+        function editrow(event) {
+            // console.log(event.id)
+
+
+            if ((document.getElementById(event.id).innerHTML == "Edit") && (switchbtn == 1)) {
+                editCustomer(event);
+                document.getElementById(event.id).innerHTML = "Cancel"
+                switchbtn = 0;
+
+            } else if (document.getElementById(event.id).innerHTML == "Cancel") {
+                cancelEdit(event);
+                document.getElementById(event.id).innerHTML = "Edit"
+            }
+        }
+
+        function cancelEdit(button) {
+            switchbtn = 1;
+            indexid = button.id
+            //indexid = indexid.substring(1, indexid.length);
+            display();
+            textData.value = null;
+            gendertype[count].checked = false;
+            cardtypes.value = null;
+            agedetail.value = null;
+
+            document.getElementById("addbutton").disabled = false;
+            document.getElementById("edit" + indexid).disabled = true;
+
+        }
+
+     function editCustomer(event) {
+            indexid = event.id;
+         console.log(indexid)
+         console.log(Name[indexid])
+            textData.innerHTML = Name[indexid];
+            console.log(textData.value)
+            for (var i = 0; i < gendertype.length; i++) {
+                if (gendertype[i].value == "Male") {
+                    gendertype[i].checked = true;
+                } else if (gendertype[i].value == "Female") {
+                    gendertype[i].checked = true;
+                }
+                else if (gendertype[i].value == "Other") {
+                    gendertype[i].checked = true
+                }
+            }
+            gendertype.value = Gender[indexid];
+            agedetail.value = Age[indexid];
+            cardtypes.value = CreditCard[indexid];
+            document.getElementById("addbutton").disabled = true;
+
+            document.getElementById("editbtn").innerHTML = "<br><button id=edit" + indexid + " onClick=editData(this)>Edit Customer Data</button>"
+
+        }
+
+         function editData(event) {
+            switchbtn = 1;
+            indexid = event.id;
+            Name[indexid] = textData.value;
+            Age[indexid] = agedetail.value;
+            CreditCard[indexid] = cardtypes.value;
+            for (var i = 0; i < gendertype.length; i++) {
+                if (gendertype[i].checked == true) {
+                    Gender[indexid] = gendertype[i].value;
+
+                }
+            }
+            display();
+            textData.value = null;
+            gendertype[count].checked = false;
+            cardtypes.value = null;
+            agedetail.value = null;
+            document.getElementById(event.id).disabled = true;
+            document.getElementById("addbutton").disabled = false;
+
+        }
+
+
+    </script>
+</body>
+
+</html>

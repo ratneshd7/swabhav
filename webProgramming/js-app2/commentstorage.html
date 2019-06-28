@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    Enter Comment:<input type="text" id="textbox">
+    <p id="textparagraph"></p>
+
+    <script>
+
+            var comment;
+            var commentData = [];
+            var comment2
+            var length=0;
+            var paragraph = document.querySelector("#textparagraph");
+        
+            document.querySelector("#textbox").addEventListener("keypress", function (e) {
+               if(e.keyCode==13){
+                e.preventDefault();
+                addData();
+               displayData();
+               }
+        
+            });
+        
+            function addData(){
+                let storage=JSON.parse(localStorage.getItem('comments'))
+                comment=document.getElementById("textbox").value;
+               // console.log(comment)
+        
+                if(comment==' '){
+                alert("null");
+                }
+                else{
+                    if(storage==null){
+                        commentData.push(comment);
+                        localStorage.setItem('comments',JSON.stringify(commentData));
+                        length++;
+                    }
+                    else{
+                      length=localStorage.length;
+                        commentData=JSON.parse(localStorage.getItem('comments'))
+                         commentData.push(comment);
+                        localStorage.setItem('comments',JSON.stringify(commentData))
+                    }
+                }
+        
+            }
+
+            function deletePara(){
+                
+            }
+        
+            function displayData(){
+
+                comment2=JSON.parse(localStorage.getItem('comments'))
+                var str="";
+                if(comment2!=null)
+                for(var i=comment2.length-1;i>=0;i--)
+                {
+                    str=str+'<p id="p '+ i +' "><button id="button' + i + " onclick='deletePara()'>X</button>'" + comment2[i]+"'<\p>';
+                }
+                document.getElementById("textparagraph").innerHTML =str;
+            }
+
+
+
+        displayData();
+        </script>
+
+
+
+</body>
+
+
+</html>

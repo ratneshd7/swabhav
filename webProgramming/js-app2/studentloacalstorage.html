@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <button id="loadbutton">LOAD</button>
+    <p id="paragraph"></p>
+
+    <script>
+       window.onload=display();
+        var studentData=[];
+        // var name="Ratnesh";
+        // var Dept="CMPN"
+        var student = [{
+            'student_id':1,
+            'student_name':'Ratnesh',
+            'student_Department':'Cmpn'
+            },
+            {
+            'student_id': 1,
+            'student_name': 'Ram',
+            'student_Department':'IT'
+            },
+            {
+            'student_id':1,
+            'student_name':'Krishna',
+            'student_Department':'Civil'
+            }]
+
+            localStorage.setItem("studentKey",JSON.stringify(student))
+            document.querySelector("#loadbutton").addEventListener('click',display);
+
+            function display(){
+               studentData=JSON.parse(localStorage.getItem("studentKey"))
+               console.log(studentData)
+               var str=""
+               for(var i=0;i<studentData.length;i++)
+               {
+
+               }
+               document.getElementById("paragraph").innerHTML=localStorage.getItem("studentKey")
+
+              // document.getElementById("paragraph").innerHTML=studentData.student_id+"  "+studentData.student_name+"  "+studentData.student_Department;
+            }
+    </script>
+</body>
+
+</html>

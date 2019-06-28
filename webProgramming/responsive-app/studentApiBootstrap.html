@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css\bootstrap.css">
+</head>
+
+<body class="container">
+<div class="jumbotron text-center">
+    <h1>Students Data</h1>
+</div>
+    <div id="div1" style="border: 1px">
+        <div class=" container-fluid " style="width: 350; border: 1px solid black; background-color:khaki" >
+
+           <b> Name:</b> <span class="glyphicon glyphicon-pencil"></span> <input type="text" class="form-control" id="studentname"><br><br>
+           <b>RollNo:</b><span class="glyphicon glyphicon-pencil"></span>  <input type="number" class="form-control" id="studentrollno"><br><br>
+           <b> Date:</b> <span class="glyphicon glyphicon-calendar"></span> <input type="date" class="form-control" id="studentdate"><br><br>
+           <b>Email Id:</b>  <span class="glyphicon glyphicon-envelope"></span> <input type="email" class="form-control" id="studentemail"><br><br>
+           <b> Age:</b><span class="glyphicon glyphicon-pencil"></span> <input type="number" class="form-control" id="studentage"><br><br>
+           <b>Gender:</b><span class="glyphicon glyphicon-user"></span> <span>&nbsp;&nbsp;&nbsp;</span>
+            <label class="radio-inline"><input type="radio" class="radio" name="gender" id="Male"
+                    value="Male"><b>Male</b></label>
+
+            <label class="radio-inline"><input type="radio" id="Female" name="gender" value="Female"><b>Female</b></label>
+            <br><button id="addbutton" style="display: inline-block"
+                class="btn btn-success">ADD  <span class="glyphicon glyphicon-plus"></span></button><span>&nbsp;</span> <button id="putdata"
+                style="display: inline-block" class="btn btn-success">Update</button><br><br>
+           
+        </div>
+        <p id="notification" style="color: green"></p>
+        <p id="notification1" style="color:red"></p>
+        <div id="loader"><img src="spinner.gif" /></div>
+        <span class="glyphicon glyphicon-list"></span>
+        <button id="load" style="display: inline-block" class="btn btn-info">LoadData</button><br>
+        <div id="tab">
+            <table  class="table table-bordered" style="background-color: rgb(255, 185, 159);font-weight: bold; " id="list" cellspacing="0px" cellpadding="20px" text-align="center">
+                <thead>
+                    <tr>
+                        <td>Id</td>
+                        <td>RollNo</td>
+                        <td>Name</td>
+                        <td>Age</td>
+                        <td>Email</td>
+                        <td>Date</td>
+                        <td>Gender</td>
+                        <td>Delete</td>
+                        <td>Edit</td>
+                    </tr>
+                </thead>
+                <tbody class="table table-bordered">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        var id;
+        $("#putdata").hide();
+        $(document).ready(apiDataHandler);
+        function apiDataHandler() {
+            var loading = $('#loader').hide();
+            $(document)
+                .ajaxStart(function () {
+                    loading.show();
+                })
+                .ajaxStop(function () {
+                    loading.hide();
+                });
+
+            $("#load").click(function () {
+                loadTable();
+            });
+
+            $("#addbutton").click(postData)
+            $("#putdata").click(putData)
+
+            function getData() {
+                studentname = $("#studentname").val();
+                studentrollno = $("#studentrollno").val();
+                studentemail = $("#studentemail").val();
+                studentage = $("#studentage").val();
+                studentdate = $("#studentdate").val();
+                if ($("input[name='gender']:checked").val() == "Male") {
+                    studentgender = true;
+                } else {
+                    studentgender = false;
+                }
+            }
+
+            function postData() {
+                getData();
+                if (studentname != '' && studentrollno != '' && studentemail != '' && studentage != '' && studentdate != '') {
+                    $("#notification").html("")
+                    $.post("http://gsmktg.azurewebsites.net/api/v1/techlabs/test/students", {
+                        rollNo: studentrollno,
+                        name: studentname,
+                        email: studentemail,
+                        age: studentage,
+                        date: studentdate,
+                        isMale: studentgender
+                    },
+                        function (data) {
+                            console.log(data)
+                            $("#notification").append("Added Successfully" + '<br>')
+
+                            loadTable();
+                        })
+                }
+                else
+                    alert("fill details")
+
+                clearField();
+            }
+            function putData() {
+                $("#addbutton").show();
+                $("#putdata").hide();
+                getData();
+                clearField();
+                if (studentname != '' && studentrollno != '' && studentemail != '' && studentage != '' && studentdate != '') {
+                    $("#notification").html("")
+
+                    $.ajax({
+                        url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students/" + id,
+
+                        type: "PUT",
+                        data: {
+                            rollNo: studentrollno,
+                            name: studentname,
+                            email: studentemail,
+                            age: studentage,
+                            date: studentdate,
+                            isMale: studentgender
+                        },
+
+
+                        success: function (data) {
+                            loadTable()
+                        },
+                        error: function (status) {
+                            alert("data already deleted " + status);
+
+                        }
+                    })
+                }
+                else
+                    alert("fill details")
+            }
+            $("body").on("click", "input[value=Edit]", function () {
+                $("#addbutton").hide();
+                $("#putdata").show();
+                var row = $(this).parents("tr");
+                var item = row.find("td").first().text();
+                //  console.log(row.find("td:eq(6)").text())
+                id = item;
+
+
+                $("#studentname").val(row.find("td:eq(2)").text());
+                $("#studentdate").val(row.find("td:eq(5)").text());
+                $("#studentage").val(row.find("td:eq(3)").text());
+                $("#studentemail").val(row.find("td:eq(4)").text());
+                $("#studentrollno").val(row.find("td:eq(1)").text());
+                if (row.find("td:eq(6)").text() == "Male") {
+                    $('input[name="gender"][id="Male"]').prop('checked', true);
+                } else {
+                    $('input[name="gender"][id="Female"]').prop('checked', true);
+                }
+
+                $(this).parents("tr").find("td:eq(8)").prepend("<button class='btn btn-warning btn-xs btn-cancel'>Cancel</button>")
+                $(this).hide();
+
+                // $('input[name="gender"]').prop('checked', true)
+                // $('input:radio[class=myrdb][id=radioid'+answer[count]+']').prop('checked', true)
+
+            })
+            $("body").on("click", ".btn-cancel", function () {
+                clearField();
+                $(this).parents("tr").find("input[value=Edit]").show();
+                $(this).parents("tr").find(".btn-cancel").remove();
+                $("#addbutton").show();
+                $("#putdata").hide();
+            })
+            function clearField() {
+                $("#studentname").val('');
+                $("#studentdate").val('');
+                $("#studentage").val('');
+                $("#studentemail").val('');
+                $("#studentrollno").val('');
+                $('input[name="gender"]').prop('checked', false);
+            }
+
+            $("body").on("click", "input[value=Delete]", deletData)
+            function deletData() {
+                var row = $(this).parents("tr");
+                //console.log(row)
+                var item = row.find("td").first().text();
+                //console.log(item)
+                var flag = confirm("you r about to delete user detail of " + row.find("td:eq(2)").text())
+                if (flag) {
+                    $.ajax({
+                        url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students/" + item,
+                        type: "DELETE",
+                        contentType: 'application/json',
+                        success: function (data) {
+                            loadTable()
+                        },
+                        error: function (status) {
+                            alert("data already deleted " + status);
+
+                        }
+                    })
+                }
+            }
+            function loadTable() {
+
+                $.ajax({
+                    url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        createTable(data)
+                    },
+                    error: function (status) {
+                        alert(status);
+                    }
+                });
+
+            }
+
+            function createTable(data) {
+                var result = JSON.stringify(data)
+                var store = JSON.parse(result)
+                $("#notification1").html("")
+                $("#notification1").append("No Of Students Are " + store.length)
+                $("#list tbody tr").remove();
+                for (var i = 0; i < store.length; i++) {
+                    var Gender = "Male";
+                    if (store[i].isMale == false)
+                        Gender = "Female";
+                    var new_row = " ";
+                    new_row += "<td>" + store[i].id + "</td><td>" + store[i].rollNo + "</td><td>" + store[i].name + "</td><td>" + store[i].age + "</td><td>" + store[i].email + "</td><td>" + store[i].date + "</td><td>" + Gender + "</td><td><span class=\"glyphicon glyphicon-trash\"></span><input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" id=\"Delete" + i + "\">" + "</td><td><span class=\"glyphicon glyphicon-pencil\"></span><input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" id=\"Edit" + i + "\"></td>";
+                    var tr = document.createElement('tr');
+                    tr.innerHTML = new_row;
+                    $('#list').append(tr);
+                }
+
+            }
+
+        }
+    </script>
+</body>
+
+</html>

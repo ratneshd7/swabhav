@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="student">
+    <div ng-controller="studentController">
+        <button ng-click="load()">LoadData</button>
+        <p>{{students.id+" "+students.name+" "+students.cgpa}}</p>
+        <img ng-src="{{students.image}}" alt="">
+    </div>
+
+    <script src="angular.js"></script>
+
+    <script>
+        angular.module('student', [])
+            .controller('studentController',['$scope', '$timeout', function ($scope, $timeout) //whenever controller created the DI happend $scope
+            {
+
+                $scope.load = function () {
+
+                    $scope.students = {
+                        "id": 1,
+                        "name": "Ratnesh",
+                        "cgpa": 8.03,
+                        "image": "image.jpg"
+                    }
+                }
+
+                $timeout(function () {
+
+                    $scope.load();
+                    $scope.students = {
+                        "id": 1,
+                        "name": "Ravi",
+                        "cgpa": 8.03,
+                        "image": "image.jpg"
+                    }
+                    
+                }, 3000);
+            }])
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    Enter Comment:<input type="text" id="textbox">
+    <p id="textparagraph"></p>
+
+
+
+    <script>
+        var comment;
+        var commentData = [];
+        var length=0;
+        var paragraph = document.querySelector("#textparagraph");
+        
+        
+          document.querySelector("#textbox").addEventListener("keypress", function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                addData();
+                displayData();
+            }
+
+        });
+
+        function addData(){
+localStorage.setItem('comment'+length,)
+        }
+
+        function displayData() {
+
+        }
+
+    </script>
+</body>
+
+
+</html>

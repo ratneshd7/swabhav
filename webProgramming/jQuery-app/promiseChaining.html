@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <script>
+        asyncSquareEvenNo(2).then(function (result) {
+            console.log("1st " + result)
+            return asyncSquareEvenNo(result)
+        }).then(function (newResult) {
+            console.log("2nd " + newResult)
+            return asyncSquareEvenNo(newResult)
+        }).then(function (result3) {
+            console.log(result3)
+        })
+
+
+        function asyncSquareEvenNo(no) {
+            return new Promise(function (resolve, reject) {
+                if (no % 2 == 0)
+                    resolve(no * no )
+                else
+                    reject({ error: "Not an Even No" })
+            }) //     .then(function (result) {
+            //     console.log("3rd "+result)
+            //     return result*3
+            // }).then(function (result) {
+            //     console.log("2nd "+result)})
+        }
+        console.log("end of script")
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    Enter Text:<input type="text" id="textbox">
+    <div id="diplaybox">
+           
+    </div>
+    <p id="para"></p>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#textbox').keyup(function () {
+                $('#diplaybox').css({
+                    'color': 'red',
+                    'fontSize': '3em',
+                    'font-weight': 'bold'
+                })
+                $('#diplaybox').text($('#textbox').val())
+                $('p').html($('#textbox').val())
+            })
+        })
+
+    </script>
+
+
+</body>
+
+</html>

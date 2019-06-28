@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="apiapp">
+    <div ng-controller="apiController">
+        Enter Number:<input type="number" ng-model="getnumber">
+        <button ng-click="search()">Search</button>
+        <div ng-hide="isHidden" class="loader" ></div>
+        <!-- <img ng-hide="isHidden" src="spinner.gif"> -->
+        <p ng-repeat="result in resultarray">{{result}}</p>
+    </div>
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid blue;
+            border-right: 16px solid green;
+            border-bottom: 16px solid red;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <script src="angular.js"></script>
+    <script>
+        angular.module('apiapp', []).controller('apiController',[ '$scope', '$http', '$timeout',function ($scope, $http, $timeout) {
+            $scope.resultarray = [];
+            $scope.isHidden = true;
+            $scope.search = function () {
+                $scope.isHidden = false;
+                var number = $scope.getnumber;
+
+                $timeout(function () {
+
+                    $http({
+                        method: 'GET',
+                        url: 'http://numbersapi.com/' + number
+
+
+                    }).then(function success(response) {
+                        console.log(response.data)
+
+                        $scope.resultarray.push(response.data)
+                        // $scope.result=response.data;
+                    }, function error(response) {
+
+                        console.log(response.data)
+                    });
+                    $scope.isHidden = true;
+                }, 3000)
+
+            }
+        }])
+
+    </script>
+</body>
+
+</html>

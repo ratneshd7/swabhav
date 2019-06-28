@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="filterapp">
+    <div ng-controller="filterController">
+        <!-- <input type="number" ng-model="getnumber">
+        <button ng-click="get()">Get</button> -->
+        <p>{{number|numberFilter}}</p>
+    </div>
+
+    <div ng-controller="ArrayController">
+
+        <p ng-repeat="friend in friends">{{friend|startsWithA}}</p>
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        var model = angular.module('filterapp', [])
+        model.filter('numberFilter', function () {
+            return function (numberinput) {
+                numberinput = numberinput / 10;
+                return numberinput;
+            }
+        })
+        model.controller('filterController', ['$scope',function ($scope) {
+            $scope.number = 71
+        }])
+
+        model.filter('startsWithA', function () {
+
+            return function (friendsArray) {
+                var filtered = [];
+                for (var i = 0; i < friendsArray.length; i++) {
+                    var item = friendsArray[i];
+                    if (/a/i.test(item.name.substring(0, 1))) {
+                        filtered.push(item);
+                    }
+                }
+                return filtered;
+            }
+        })
+
+        model.controller('ArrayController',['$scope',function ($scope) {
+            $scope.friends = [{
+                name: 'Andrew'
+            }, {
+                name: 'Will'
+            }, {
+                name: 'Mark'
+            }, {
+                name: 'Alice'
+            }, {
+                name: 'Todd'
+            }];
+
+        }])
+    </script>
+</body>
+
+</html>

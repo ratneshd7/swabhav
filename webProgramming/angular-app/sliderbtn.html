@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<body ng-app="slider">
+    <div ng-controller="sliderController">
+        <input type="range" min="0" max="100" value="0" ng-model="sliderValue.value">
+        <p>{{sliderValue.value}}</p>
+        <div>
+            <button ng-repeat="value in list(sliderValue.value) track by $index" ng-style="btncolor" ng-click="getIndex($index)">{{$index}}</button>
+            <p>Your clicked button no is:{{button}}</p>
+        </div>
+
+    </div>
+
+    <script src="angular.js"></script>
+
+    <script>
+
+        angular.module('slider', []).controller('sliderController', ['$scope',function ($scope) {
+
+            $scope.sliderValue = {
+                value: 1
+
+            }
+            $scope.list = function (slidervalue) {
+                return new Array(slidervalue);
+            }
+
+            $scope.getIndex=function(x){
+                console.log(x)
+                $scope.button=x
+                // $scope.btncolor={
+                //     "background-color": 'red'
+                // }
+            }
+
+
+        }])
+    </script>
+</body>
+
+</html>

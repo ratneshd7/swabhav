@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <button id="btn">Click</button>
+</body>
+<script>
+    // var color = ["red", "blue", "green", "yellow"]
+    var isColor = '#c10000'
+    document.querySelector("#btn").addEventListener('click', function () {
+        if(isColor=='#c10000'){
+        document.body.style.background = '#c10000';
+        isColor='rgb(0, 255, 0)'
+        return;
+        }
+        if(isColor=='rgb(0, 255, 0)'){
+        document.body.style.background ='rgb(0, 255, 0)' ;
+        isColor='#c10000'
+        return; 
+        }
+     
+    })
+</script>
+
+</html>

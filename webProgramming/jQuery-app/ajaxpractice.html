@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div id="div1">
+        <h2> jQuery AJAX Change </h2>
+    </div>
+    <button>Click To Change Content</button>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("button").click(function () {
+                $("#div1").load("demot.txt");
+            });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        Promise.resolve('some').then(function (string) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    string += 'thing';
+                    resolve(string);
+                }, 1);
+            });
+        }).then(function (string) {
+                console.log(string);
+
+            })
+            console.log("end of script")
+    </script>
+
+</body>
+
+</html>

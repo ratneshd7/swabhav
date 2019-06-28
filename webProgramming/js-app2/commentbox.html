@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    Enter Comment:<input type="text" id="textbox">
+    <p id="textparagraph"></p>
+
+    <script>
+        var comment = [];
+
+      //  var count1 = 0;
+        document.querySelector("#textbox").addEventListener('keypress', function (event) {
+            if (13 == event.keyCode) {
+                // comment[count1] = this.value;
+                // count1++;
+                comment.push(this.value);
+
+                display(comment);
+
+            }
+
+        })
+
+        var commentparagraph = document.getElementById("textparagraph");
+var count2=0;
+        function clickhandler(event) {
+            count2++;
+            var nvalue = event.target.value
+            //     var ids = document.querySelectorAll("button" + nvalue);
+            //     var len = ids.length, n;
+            //   if (len < 2) { return this; }
+            //     for (n = 0; n < len; n++) {
+            //         if (ids[n]) {
+            //             ids[n].parentElement.removeChild(ids[n]);
+            //         }
+            //     }
+
+            console.log(nvalue + "" + comment[nvalue])
+
+            comment.splice(nvalue, 1)
+            console.log(comment.length)
+            display(comment)
+
+        }
+
+        function display(comment) {
+
+            commentparagraph.innerHTML = " "
+
+            var filtered = comment.filter(function (el) {
+                return el != undefined;
+            });
+            var count = filtered.length - 1;
+            //  count1=count1-count2;
+            for (var i = filtered.length - 1; i >= 0; i--) {
+
+                var crossbutton = document.createElement('button')
+                crossbutton.type = 'button'
+                crossbutton.id = "button" + count;
+                crossbutton.value = count;
+                crossbutton.textContent = 'X'
+                crossbutton.onclick = clickhandler;
+
+                var text = document.createTextNode(filtered[count])
+                text.id = "text" + count;
+                var para = document.createElement('p')
+                commentparagraph.appendChild(para)
+                commentparagraph.appendChild(text)
+                commentparagraph.appendChild(crossbutton)
+                count--;
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

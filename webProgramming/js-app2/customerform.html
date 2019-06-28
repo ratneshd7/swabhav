@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div id="data">
+        <form id="person">
+            <h1> Form </h1>
+
+            <p>Enter customer name:<input type="text" id="textbox"></p>
+            <p>Select Gender : <input type="radio" id="gender1" name="gender" value="male"> Male
+                <input type="radio" id="gender2" name="gender" value="female"> Female
+            </p>
+            <p>Credit card type:<select id="myDropDownList" name="myDropDownList">
+                    <option value="select">select</option>
+                    <option value="mastercard">Master Card</option>
+                    <option value="Visa">Visa</option>
+                    <option value="AmericanExpress">AmericanExpress</option>
+                </select>
+            </p>
+
+        </form>
+        <div id="buttondiv">
+            <button id="adddata" type="button" value=" Add " onclick="AddData()">AddData<span
+                    id="span">&nbsp;&nbsp;</span></button>
+            <button id="updatedata" type="button" value="edit" onclick="updatData()">UpdateEditedDetails</button>
+        </div>
+    </div>
+    <h3>List Of Customers</h3>
+    <div id="tab">
+        <table id="list" cellspacing="0px" cellpadding="20px" text-align="center" border="1px">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Gender</td>
+                    <td>Card Type</td>
+                    <td>Delete</td>
+                    <td>Update</td>
+
+                </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <script>
+        var gender2 = document.getElementsByName("gender")
+        var textdata = document.querySelector("#textbox");
+        var card = document.getElementById("myDropDownList")
+        document.getElementById("updatedata").disabled = true
+        var gendervalue;
+        var count = 0;
+        function AddData() {
+            document.getElementById("updatedata").disabled = true
+            var name = document.getElementById("textbox").value;
+            //var gender = document.getElementById("gender").name;
+            var gender = document.querySelector('input[name="gender"]:checked');
+            gender = gender ? gender.value : '';
+
+            var cardvalue = card.value;
+            if ((gender == false) || (name == '') || (card.value == 'select') || (card.value == '')) {
+                alert("fill the form first")
+            }
+            else {
+                DisplayTable(name, gender, cardvalue);
+                reset();
+            }
+        }
+
+
+        function reset() {
+            textdata.value = null;
+            for (var i = 0; i < gender2.length; i++) {
+                gender2[i].checked = false;
+            }
+            card.value = null;
+        }
+        var index = 0;
+        function DisplayTable(name, gender, card) {
+            count++;
+            // var index = rows.parentNode.parentNode.rowIndex;
+            var rows = "";
+            rows += "<td>" + name + "</td><td>" + gender + "</td><td>" + card + "</td><td><button id ='buttonid'" + index + "' onclick='DeleteRow(this)'>X</button></td><td><button id ='updatebutton'" + index + " onclick='Changecontent(this)'>Update</button></td><td></td>";
+            var tbody = document.querySelector("#list tbody");
+            var tr = document.createElement("tr");
+            tr.innerHTML = rows;
+            tbody.appendChild(tr)
+        }
+
+        function DeleteRow(rows) {
+            var valid = confirm("you want to delete data")
+            if (valid == true) {
+                count--;
+                var index = rows.parentNode.parentNode.rowIndex;  //this will get row index of button cliecked for delete
+                console.log(index);
+                document.getElementById('list').deleteRow(index);
+            }
+        }
+
+        function Changecontent(rows) {
+
+            document.getElementById("updatedata").disabled = false
+            var tabid = document.getElementById('list');
+            index = rows.parentNode.parentNode.rowIndex;
+            var save = tabid.rows[index].cells[5];
+            document.getElementById("updatebutton").disabled = true;
+            save.innerHTML = "<button id='button"+index+"' onclick='cancel()'>cancel</button>"
+            var first = tabid.rows[index].cells[0].innerHTML;
+
+            var second = tabid.rows[index].cells[1].innerHTML;
+            console.log(second)
+            var third = tabid.rows[index].cells[2].innerHTML;
+            //cells collection
+            if (second == 'male') {
+                document.getElementById("gender1").checked = true;
+            }
+            else {
+                document.getElementById("gender2").checked = true;
+            }
+
+            document.getElementById("textbox").value = first;
+            //document.querySelector('input[name="gender"]:checked').value = second;
+            document.getElementById("myDropDownList").value = third;
+            //  document.getElementById("updatebutton" + this.index).innerHTML = '<button id ="buttonid' + this.index + '" onclick="updatData(this)">Cancel</button>'
+            document.getElementById("adddata").disabled = true;
+
+        };
+
+        function cancel() {
+        reset();
+        document.getElementById("updatebutton").disabled = false;
+        document.getElementById("updatedata").disabled = true;
+        document.getElementById("adddata").disabled = false;
+        document.getElementById("button"+index).disabled=true
+        }
+        function updatData() {
+            document.getElementById("updatedata").disabled = true
+            document.getElementById("adddata").disabled = false;
+            var tabid = document.getElementById('list');
+
+            var gender = document.querySelector('input[name="gender"]:checked');
+            gender = gender ? gender.value : '';
+
+            if ((textdata.value == " ") || (gender == false) || (card.value == "select") || (card.value == '')) {
+                alert("fill the full form");
+            }
+            else {
+                console.log(textdata.value)
+                tabid.rows[index].cells[0].innerHTML = textdata.value
+                tabid.rows[index].cells[1].innerHTML = gender
+                tabid.rows[index].cells[2].innerHTML = card.value
+
+                //document.getElementById("buttonid" + this.index).innerHTML = '<button id ="updatebutton' + this.index + '" onclick="Changecontent(this)">Update</button>'
+                // document.getElementById
+                reset();
+            }
+        }
+
+      //  var x = document.getEleme ntById("list").rows[1].cells;
+      //  x[0].innerHTML = "new "
+       // console.log(x)
+       // var y = document.getElementById("list").rows[1].cells;
+
+
+
+
+    </script>
+</body>
+
+</html>
