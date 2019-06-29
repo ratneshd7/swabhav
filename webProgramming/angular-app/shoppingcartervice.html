@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="angular.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body ng-app="cartapp">
+    <div ng-controller="cartcontroller" class="container">
+       <b> Select Product:</b> <select name="productname" class="form-control" ng-model="product"
+            ng-options="item.modelname  as item.modelname + '-' + item.price for item in Products "></select>
+       <b> Enter Quantity:</b><span class="glyphicon glyphicon-pencil"></span> <input type="number" class="form-control" ng-model="qty">
+        <button ng-click="addToCart()" class="btn btn-success">AddToCart<span class="glyphicon glyphicon-plus"></span></button>
+        <div>
+            <table class="table table-bordered table-striped table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Cost</th>
+                        <th>Total Cost</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="data in result">
+                    <td>{{data.id}}</td>
+                    <td>{{data.modelname}}</td>
+                    <td>{{data.quantity}}</td>
+                    <td>{{data.price}}</td>
+                    <td>{{data.quantity*data.price}}</td>
+                    <td><button ng-click="deleteItem($index)" class="btn btn-info btn-sm">
+                            <p class="glyphicon glyphicon-trash"></p>
+                        </button></td>
+                </tbody>
+               
+            </table>
+        </div>
+        <div>
+            <button ng-click="getTotal()" class="btn btn-success">CalculateTotalPrice</button>
+        </div>
+        <div>
+            <p id="para">Total: {{total}}</p>
+        </div>
+    </div>
+
+    <script>
+
+        angular.module('cartapp', []).factory('cartservice', ['$rootScope', function ($rootScope) {
+
+            var factoryobject = {};
+            var cart = [];
+            var count = 0
+            factoryobject.addProduct = function (name, qty, productArray) {
+
+                var flag = 0
+                var id = cart.length + 1;
+                for (var i = 0; i < cart.length; i++) {
+                    if (cart[i].modelname == name) {
+                        cart[i].quantity = parseInt(cart[i].quantity) + parseInt(qty);
+                        flag = 1;
+                        break;
+                    }
+                }
+
+                if (flag == 0) {
+                    for (var i = 0; i < productArray.length; i++) {
+                        if (productArray[i].modelname == name) {
+
+                            cart[count] = {
+                                'id': id,
+                                'modelname': name,
+                                'price': productArray[i].price,
+                                'quantity': qty
+                            }
+                            count++;
+                            break;
+                        }
+                    }
+                }
+
+                return cart;
+            }
+            factoryobject.deleterow = function (index) {
+                cart.splice(index, 1)
+                count--
+                return cart;
+            }
+            factoryobject.finalcost=function(){
+                total = 0;
+            
+                for (var i = 0; i < cart.length; i++) {
+                    var product = cart[i];
+                    total += (product.price * product.quantity);
+                }
+                console.log(total)
+                
+                return total;
+            }
+            return factoryobject;
+        }]).controller('cartcontroller', ['$scope', 'cartservice', function ($scope, cartservice) {
+            $scope.Products = [{
+
+                'modelname': 'iphone5',
+                'price': 50000,
+                'quantity': 0
+
+            },
+            {
+
+                'modelname': 'iphone6',
+                'price': 60000,
+                'quantity': 0
+            },
+            {
+
+                'modelname': 'iphone7',
+                'price': 70000,
+                'quantity': 0
+            }]
+
+            $scope.addToCart = function () {
+                $scope.product;
+                $scope.qty;
+                console.log($scope.product, $scope.qty)
+                $scope.result = cartservice.addProduct($scope.product, $scope.qty, $scope.Products)
+                console.log($scope.result)
+            }
+            $scope.deleteItem = function (index) {
+                $scope.result = cartservice.deleterow(index)
+
+            }
+            $scope.getTotal = function () {
+
+
+                $scope.total=cartservice.finalcost()
+
+               
+            }
+
+        }])
+    </script>
+
+</body>
+
+</html>
