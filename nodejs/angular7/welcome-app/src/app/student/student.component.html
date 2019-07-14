@@ -1,0 +1,18 @@
+
+<h1>student</h1>
+<p>
+  {{student.name}}
+</p>
+<p>{{student["name"]}}</p>
+<p [innerHTML]="student.id" ></p>
+<p [innerHTML]="student.cgpa" [style.font-size]='"40px"'></p>
+<img src="assets/profileImage/panda.jpg" alt="panda">
+<p>{{student.name}}</p>
+<img [src]='"assets/profileImage/panda.jpg"' alt="panda"><br><br>
+<button (click)=loadStudentData($event)>Load</button>
+<p *ngFor="let student of result">
+  {{student.id}},
+  {{student.name}},
+  {{student.cgpa}}
+
+</p>

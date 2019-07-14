@@ -1,0 +1,37 @@
+<style>
+.btns {
+
+width: 80px;
+height: 80px;
+line-height: 50px;
+border: 1px solid;
+border-radius: 50%;
+text-align: center;
+margin: 10px;
+background: #dfd3d3;
+font-size: 20px;
+font-weight: bold;
+float: left;
+background: gray;
+}
+</style>
+<div class="container" *ngIf="!isHidden">
+
+  <button type="button" class="btn btn-block btn-info" (click)="createbutton()" >Strat</button>
+<p>
+  <br><br> ******* Rules ********<br><br>
+  *default color of the ball is grey<br><br>
+  *You have to Recognize blue ball<br><br>
+  *you have only 5 attempts<br><br>
+  *red color indicate your guesse value is less than actual value<br><br>
+  *blue color indicate your guess value is greater than actual value<br><br>
+  *you have only 60 seconds to guess<br><br>
+</p>
+</div>
+<div *ngIf="!isShown" >
+    <h3 id="counter" ng-show="timeLeft > 0">Time Left Are: {{timeLeft}}</h3><br>
+    <h3 id="attempts">Your Remaining Attempts Are: {{attempts}}</h3>
+   <div >
+    <button *ngFor="let item of buttonlist;let i=index;"  [ngStyle]="{ 'background-color': item.color}" [disabled]="item.visibility"  class="btns" id="{{item.id}}" (click)="getbtnid($event)">{{item.id+1}}</button>
+   </div>
+</div>

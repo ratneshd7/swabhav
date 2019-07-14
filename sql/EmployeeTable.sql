@@ -1,0 +1,353 @@
+
+
+CREATE TABLE DEP (
+ DEPNO              integer NOT NULL,
+ DNAME               varchar(14),
+ LOC                 varchar(13),
+ CONSTRAINT DEP_PRIMARY_KEY PRIMARY KEY (DEPNO));
+
+INSERT INTO DEP VALUES (10,'ACCOUNTING','NEW YORK');
+INSERT INTO DEP VALUES (20,'RESEARCH','DALLAS');
+INSERT INTO DEP VALUES (30,'SALES','CHICAGO');
+INSERT INTO DEP VALUES (40,'OPERATIONS','BOSTON');
+
+CREATE TABLE EMP (
+ EMPNO               integer NOT NULL,
+ ENAME               varchar(10),
+ JOB                 varchar(9),
+ MGR                 integer CONSTRAINT EMP_SELF_KEY REFERENCES EMP (EMPNO),
+ HIREDATE            DATEtime,
+ SAL                 money,
+ COMM                money,
+ DEPNO              integer NOT NULL,
+ CONSTRAINT EMP_FOREIGN_KEY FOREIGN KEY (DEPNO) REFERENCES DEP (DEPNO),
+ CONSTRAINT EMP_PRIMARY_KEY PRIMARY KEY (EMPNO));
+
+INSERT INTO EMP VALUES (7839,'KING','PRESIDENT',NULL,'17-NOV-81',5000,NULL,10);
+INSERT INTO EMP VALUES (7698,'BLAKE','MANAGER',7839,'1-MAY-81',2850,NULL,30);
+INSERT INTO EMP VALUES (7782,'CLARK','MANAGER',7839,'9-JUN-81',2450,NULL,10);
+INSERT INTO EMP VALUES (7566,'JONES','MANAGER',7839,'2-APR-81',2975,NULL,20);
+INSERT INTO EMP VALUES (7654,'MARTIN','SALESMAN',7698,'28-SEP-81',1250,1400,30);
+INSERT INTO EMP VALUES (7499,'ALLEN','SALESMAN',7698,'20-FEB-81',1600,300,30);
+INSERT INTO EMP VALUES (7844,'TURNER','SALESMAN',7698,'8-SEP-81',1500,0,30);
+INSERT INTO EMP VALUES (7900,'JAMES','CLERK',7698,'3-DEC-81',950,NULL,30);
+INSERT INTO EMP VALUES (7521,'WARD','SALESMAN',7698,'22-FEB-81',1250,500,30);
+INSERT INTO EMP VALUES (7902,'FORD','ANALYST',7566,'3-DEC-81',3000,NULL,20);
+INSERT INTO EMP VALUES (7369,'SMITH','CLERK',7902,'17-DEC-80',800,NULL,20);
+INSERT INTO EMP VALUES (7788,'SCOTT','ANALYST',7566,'09-DEC-82',3000,NULL,20);
+INSERT INTO EMP VALUES (7876,'ADAMS','CLERK',7788,'12-JAN-83',1100,NULL,20);
+INSERT INTO EMP VALUES (7934,'MILLER','CLERK',7782,'23-JAN-82',1300,NULL,10);
+
+
+--display all employee deptno is 10
+select * from EMP where DEPNO=10
+
+--display all employee deptno 10 nd 20
+select * from EMP where DEPNO=10 OR DEPNO=20
+
+--dislay employee name who r mgr
+select ENAME from EMP where JOB='MANAGER'
+
+--display all emp who r in  DEPno 10 and mgr
+select * from EMP where DEPNO=10 AND JOB='MANAGER'
+
+--display all emp whose commission is null
+select * from EMP where COMM IS NULL
+
+--disp emp name salary and annual ctc (commission+salary*12)
+	select ENAME,SAL,((SAL*12) +ISNULL(COMM,0)) as ANNUALCTC FROM EMP
+
+--display employee whose salary bet 2000 to 5000
+ select * from EMP where SAL between 2000 AND 5000
+
+--display employee name in lowercase
+	select LOWER(ENAME) from EMP
+
+--display dept no which are unique
+	select DISTINCT(DEPNO) from DEP
+	select DISTINCT(DEPNO) from EMP
+
+--display emp name hireddate and year of experience
+	select ENAME,HIREDATE,
+	 CONVERT(VARCHAR(3),DATEDIFF(MONTH, HIREDATE, GETDATE())/12) +' years '+
+    CONVERT(VARCHAR(2),DATEDIFF(MONTH, HIREDATE, GETDATE()) % 12)+ ' months' 
+   AS YearsOfExperience from EMP
+
+--displaoy top 3 salaried employee
+SELECT *
+FROM EMP
+WHERE 
+(SAL IN 
+  (
+    SELECT TOP (3) SAL
+    FROM EMP 
+    ORDER BY SAL DESC
+  )
+)
+
+--or
+ SELECT TOP (3) * FROM EMP ORDER BY SAL DESC
+
+ --display employee name scott and display all working in scott department
+	select * from EMP where DEPNO IN(select DEPNO from EMP where ENAME='SCOTT')
+ --display all the employee who have same designation of blake
+	select * from EMP where JOB IN (select JOB from EMP where ENAME='BLAKE')
+ --disp all reporties of king 
+	select * from EMP where MGR in(select EMPNO from EMP where ENAME='KING')
+	select * from EMP where MGR =(select EMPNO from EMP where ENAME='KING')
+
+ --disp no of employess in employee table 
+	select COUNT(ENAME) from EMP
+
+ --disp count of emmpl avg sal and max sal ,min sal
+	select COUNT(ENAME) as emplcount,AVG(SAL) as AverageSal,MAX(SAL) as MaxSal,MIN(SAL) as MinSAL from EMP
+
+-- all ename with dename
+select EMP.ENAME,DEP.DNAME from EMP JOIN DEP ON EMP.DEPNO=DEP.DEPNO	
+	
+--all depts details along with employee if any
+select * from DEP left join EMP ON DEP.DEPNO=EMP.DEPNO
+
+-- all depts where no EMP
+select * from DEP left join EMP ON EMP.DEPNO = DEP.DEPNO where EMPNO is null
+--or
+select DEP.* from DEP left join EMP ON EMP.DEPNO = DEP.DEPNO where EMP.EMPNO is null
+--self join
+select e1.ENAME ,e2.ENAME as BOSSNAME
+from EMP as e1
+join EMP as e2  ON e1.MGR=e2.EMPNO
+--
+select e1.ENAME ,e2.ENAME as BOSSNAME
+from EMP as e1
+left join EMP as e2  ON e1.MGR=e2.EMPNO
+
+--disp employee name and dept
+
+select e1.ENAME ,e2.ENAME as BOSSNAME, DNAME
+from EMP as e1
+left join EMP as e2  ON e1.MGR=e2.EMPNO
+join DEP ON e1.DEPNO=DEP.DEPNO
+
+--group by----example--
+--dept wise no of emloyee
+select count(*)as count,DEPNO  from EMP
+group by DEPNO
+--job wise no of emp
+select count(*)as count,JOB from EMP group by JOB
+--job and det wise empl
+select count(*) as count,JOB,DEPNO
+from EMP group by JOB,DEPNO
+
+--how many mgr in dept no 10
+select count(*) as count ,
+EMP.JOB, EMP.DEPNO  from EMP
+group by EMP.JOB, EMP.DEPNO
+having EMP.JOB='MANAGER' AND EMP.DEPNO=10
+
+--disp dept name wise no of emplo
+select count(EMP.EMPNO) as count,DNAME
+from EMP 
+right join DEP on EMP.DEPNO=DEP.DEPNO
+group by DNAME
+
+--disp dept name wise no of employee count less thhan 5
+select count(EMP.EMPNO) as count,DNAME
+from EMP 
+right join DEP on EMP.DEPNO=DEP.DEPNO
+group by DNAME having COUNT(EMPNO)<5
+
+
+select * from EMP order by ENAME
+--STORE PROCEDURE
+GO
+CREATE PROCEDURE dbo.USP_GIVEHIKE @EMPID INT , @PERCENTGE INT
+AS
+ BEGIN 
+  SET NOCOUNT ON;
+  UPDATE EMP
+  SET EMP.SAL=EMP.SAL+(EMP.SAL*@PERCENTGE/100)
+   WHERE EMP.EMPNO=@EMPID
+   
+END
+GO
+EXEC dbo.USP_GIVEHIKE @EMPID=7876,@PERCENTGE =20
+SELECT * FROM EMP
+GO
+--PROCEDURE WHICH UPDATE AND RETRUN VALUE
+CREATE PROCEDURE dbo.USP_GIVEHIKE @EMPID INT , @PERCENTGE INT
+AS DECLARE @ResultValue FLOAT
+ BEGIN 
+  SET NOCOUNT ON;
+  UPDATE EMP
+  SET EMP.SAL=EMP.SAL+EMP.SAL*@PERCENTGE/100 WHERE EMP.EMPNO=@EMPID
+ UPDATE EMP
+ SET @ResultValue= EMP.SAL WHERE EMP.EMPNO=@EMPID
+END
+
+RETURN @ResultValue
+GO
+---EXECUTE BELOW THREE TOGETHER
+DECLARE @Result INT
+EXEC  @Result= dbo.USP_GIVEHIKE @EMPID=7369,@PERCENTGE =20
+SELECT @Result
+---
+DROP PROCEDURE dbo.USP_GIVEHIKE
+SELECT * FROM EMP
+
+--TO GET METADATA OR DICTIONARY 
+SELECT * FROM SYS.objects WHERE name='EMP'
+--FOR PROCEDURES
+SELECT * FROM SYS.procedures 
+--FOR ALL TABLES IN DATABASE
+SELECT * FROM SYS.tables
+--TO GET FUNCTION
+SELECT * FROM SYS.all_objects WHERE TYPE='FN'
+--FUNCTION RETURN MAX SALARIED EMPLOYEE
+GO
+CREATE FUNCTION UDF_MaxSalariedEmployee ()
+RETURNS VARCHAR(20) 
+BEGIN
+ RETURN (select ENAME FROM EMP WHERE SAL=(SELECT max(SAL) from EMP ))
+ END
+ GO
+
+ SELECT DBO.UDF_MaxSalariedEmployee()
+
+ --log table
+ CREATE TABLE USER_LOG (ID INT NOT NULL IDENTITY, MESSAGE VARCHAR(50))
+INSERT INTO USER_LOG VALUES('IT IS A LOG TABLE')
+SELECT * FROM USER_LOG
+
+--DROP TABLE USER_LOG
+ --TRIGGERS TO FIRE WHEN INSERT OR UPDATE DATA 
+GO
+CREATE TRIGGER UDT_UPPERCASE ON DEP   
+INSTEAD OF INSERT  
+AS 
+BEGIN  
+	--declare @message 
+   DECLARE @ID INT, @NAME varchar(50),@LON varchar(50)
+   SELECT @ID=DEPNO ,@NAME=DNAME,@LON=LOC from inserted
+   INSERT INTO DEP(DEPNO,DNAME,LOC) VALUES(@ID,UPPER(@NAME),UPPER(@LON))
+   
+   INSERT INTO USER_LOG (MESSAGE) VALUES('inserted value in dep')
+   
+END
+GO 
+
+DROP TRIGGER UDT_UPPERCASE
+
+INSERT INTO DEP VALUES(7,'developer','india')
+SELECT * FROM DEP
+
+--TRIGGER FOR UPDATE 
+GO
+CREATE TRIGGER UDT_UPDATE ON DEP
+INSTEAD OF UPDATE
+AS
+BEGIN
+       SET NOCOUNT ON;
+ 
+       DECLARE  @Name VARCHAR(50), @CustomerId INT
+ 
+       SELECT 
+	   @CustomerId = INSERTED.DEPNO,
+              @Name = INSERTED.DNAME
+                   
+       FROM INSERTED
+
+	   UPDATE DEP SET
+	        
+			DNAME=@NAME  WHERE DEPNO=@CustomerId
+
+			PRINT 'UPDATED SUCCESSFULLY' 
+			INSERT INTO USER_LOG VALUES('UPDATED value in dep' )
+			
+END
+GO
+SELECT * FROM DEP
+UPDATE DEP SET DNAME='ACCOUNTING' WHERE DEPNO=30
+
+DROP TRIGGER UDT_UPDATE
+--transaction 
+
+select * from DEP
+GO
+BEGIN TRANSACTION T1
+ INSERT INTO DEP VALUES(6,'ENGINEER','india')
+
+ SELECT * FROM DEP
+ ROLLBACK
+ GO
+
+ --CUSTOMER MERCHANT TRANSACTION
+ CREATE TABLE CUSTOMER(ID INT PRIMARY KEY,BALANCE INT);
+ INSERT INTO CUSTOMER VALUES(101,10000)
+  INSERT INTO CUSTOMER VALUES(102,10000)
+   INSERT INTO CUSTOMER VALUES(103,10000)
+ CREATE TABLE MERCHANT(ID INT PRIMARY KEY,BALANCE INT);
+ INSERT INTO MERCHANT VALUES(10,1000000)
+ INSERT INTO MERCHANT VALUES(11,1000000)
+ INSERT INTO MERCHANT VALUES(12,1000000)
+
+ 
+
+    BEGIN TRANSACTION T2
+	   BEGIN TRY  
+      UPDATE CUSTOMER SET BALANCE=BALANCE-4000 WHERE ID=101
+	  UPDATE MERCHANT SET BALANCE=BALANCE+4000 WHERE ID=10
+	  COMMIT
+        END TRY  
+		BEGIN CATCH  
+        ROLLBACK
+        END CATCH
+
+		SELECT *FROM CUSTOMER
+		SELECT * FROM MERCHANT
+
+	BEGIN TRANSACTION 
+	   BEGIN TRY  
+          UPDATE CUSTOMER SET BALANCE=BALANCE-4000 WHERE ID=102
+		  SELECT * FROM CUSTOMER
+	      UPDATE MERCHANT SET BALANCE= BALANCE+4000 WHERE ID=2 ;
+		 
+		 THROW  51000, 'The record does not exist.', 1; 
+		  COMMIT
+       
+	    END TRY  
+		BEGIN CATCH 
+		
+        ROLLBACK
+		SELECT * FROM CUSTOMER
+        END CATCH
+         
+		SELECT *FROM CUSTOMER
+		SELECT * FROM MERCHANT
+
+
+
+
+
+--INDEXES
+CREATE TABLE FOO(ID INT NOT NULL, NAME VARCHAR(20))
+INSERT INTO FOO VALUES(10,'RATNESH')
+INSERT INTO FOO VALUES(20,'DEEPESH')
+INSERT INTO FOO VALUES(3,'MANISH')
+INSERT INTO FOO VALUES(2,'PRIYANK')
+--INDEX BEFORE PRIMARY
+select * from sys.indexes
+where object_id = (select object_id from sys.objects where name = 'FOO')
+--AFTER PRIMARY
+ALTER TABLE FOO 
+ADD
+CONSTRAINT PK_ID  PRIMARY KEY(ID)  
+--CLUSTER
+SELECT * FROM FOO
+
+select * from sys.indexes
+where object_id = (select object_id from sys.objects where name = 'FOO')
+
+CREATE NONCLUSTERED INDEX FOO_NAME ON FOO(NAME)
+--TO SEE INDEX DESCRIPTION
+EXECUTE SP_HELPINDEX FOO
+

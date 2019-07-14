@@ -1,0 +1,13 @@
+<div [ngStyle]="{'background': getcolor}">
+  <label for="textbox">
+    Enter Text:<input type="text" [(ngModel)]="value"> <span>&nbsp;</span>
+    font-size: <input type="text" [(ngModel)]="pixVal">
+    SelectColor: <select [(ngModel)]="selectedcolor" (change)="changeColor($event)">
+            <option value="#f48273">Red</option>
+            <option value="#9eff66">Green</option>
+            <option value="#9cacfc">Blue</option>
+    </select>
+
+    <p style.background-color="{{getcolor}}" style.font-size="{{pixVal}}" >{{value}}</p>
+  </label>
+</div>
