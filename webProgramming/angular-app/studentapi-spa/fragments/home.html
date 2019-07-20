@@ -1,0 +1,36 @@
+<div>
+    <p>Number of student - {{leng}}</p>
+    <table class="table table-bordered table-striped table-hover table-sm">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Roll no</th>
+                <th scope="col">Ege</th>
+                <th scope="col">Email</th>
+                <th scope="col">Date</th>
+                <th scope="col">Gender</th>
+                <td scope="col">Edit</td>
+                <td scope="col">Delete</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="s in student">
+                <th scope="row">{{$index+1}}</th>
+                <td>{{s.name}}</td>
+                <td>{{s.rollNo}}</td>
+                <td>{{s.age}}</td>
+                <td>{{s.email}}</td>
+                <td>{{s.date}}</td>
+                <td>{{s.isMale | genderfilter}}</td>
+                <td><a href="#!/edit/{{s.id}}"> 
+                        <p class="glyphicon glyphicon-edit"></p>
+                    </a></td>
+                   <td> <button ng-click="deleteStudent(s.id)" class="btn btn-info btn-sm">
+                        <p class="glyphicon glyphicon-trash"></p>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

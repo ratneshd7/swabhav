@@ -1,0 +1,266 @@
+<html>
+ <head>
+        <script src="angular.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ </head>
+<body ng-app="studentapiserviceapp">
+    <div ng-controller="getstudentcontroller">
+ 
+        <div class="container-fluid" style="background-color:thistle;width:350px;border:2px solid black";">
+            <h4>Add students details</h4>
+            <span class="glyphicon glyphicon-pencil"></span> Name: <input type="text" id="studentname" ng-model="studentname"><br><br>
+            <span class="glyphicon glyphicon-pencil"></span>RollNo: <input type="number" id="studentrollno" ng-model="studentrollno"><br><br>
+            <span class ="glyphicon glyphicon-calendar"></span>Date:<input type="date" id="studentdate" ng-model="studentdate"><br><br>
+            <span class ="glyphicon glyphicon-envelope"></span> Email Id:<input type="email" id="studentemail" ng-model="studentemail"><br><br>
+            <span class="glyphicon glyphicon-pencil"></span>Age: <input type="number" id="studentage" ng-model="studentage"><br><br>
+            <span class ="glyphicon glyphicon-user"></span>Gender:<input type="radio" ng-model="gendervalue" name="gender" ng-checked="Male" value="male">Male
+            <input type="radio" ng-model="gendervalue" name="gender" ng-checked="Female" value="female">Female
+            <br><br><button id="addbutton" class = "btn btn-primary" ng-click="addstudent()" ng-hide ="isAdd"
+                style="display: inline-block">Add</button><span>&nbsp;</span> 
+                <button id="putdata" class = "btn btn-success" ng-click="updatestudent()" ng-hide = "isUpdate"
+                style="display: inline-block">Update</button><br><br>
+        
+        </div>
+        <br>
+        <button ng-click="loadData()">Load Students <span class ="glyphicon glyphicon-file"></span></button><br>
+        <p id="notification" style="color: green">Total Number of Students:{{noofstudent}}  <span class ="glyphicon glyphicon-list-alt"></span></p>
+        <br>
+        <table id="list" class = "table table-bordered" style="background-color:lightsteelblue"  cellspacing="0px" cellpadding="20px" text-align="center" border="1px">
+            <h2>List of Students  <span class ="glyphicon glyphicon-list-alt"></span></h2>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>RollNo</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Gender</th>
+                    
+                </tr>
+            </thead>
+ 
+            <tbody>
+                <tr ng-repeat="student in result">
+                    <td>{{student.id}}</td>
+                    <td>{{student.rollNo}}</td>
+                    <td>{{student.name}}</td>
+                    <td>{{student.age}}</td>
+                    <td>{{student.email}}</td>
+                    <td>{{student.date|date: dd/mm/yyyy}}</td>
+                    <td>{{student.isMale}}</td>
+                    <td><button id="{{student.id}}" class='btn btn-warning btn-xs btn-cancel btn btn-danger' ng-click="deleteData($event)">Delete <span class ='glyphicon glyphicon-remove'></span></button></td>
+                    <td><button id="{{student.id}}" class ="btn btn-info" ng-click="editData($event)">Edit <span class="glyphicon glyphicon-edit"></span></button></td>
+                </tr>
+ 
+            </tbody>
+        </table>
+       
+    </div>
+    <script src="angular.js"></script>
+    <script>
+        angular.module('studentapiserviceapp', [])
+            .factory('getstudentservice', ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
+                var studentfactory = {};
+ 
+                studentfactory.getdata = function () {
+                    return $q(function (resolve, reject) {
+                        $http({
+                            method: 'GET',
+                            url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students"
+ 
+                        }).then(function success(response) {
+                            console.log(response.data)
+                            resolve(response.data);
+ 
+                        }), function error(response) {
+                            console.log(response)
+                            reject(response)
+                        }
+                    })
+                }
+                
+                studentfactory.addstudent = function (studentname, studentrollno, studentemail, studentage, studentdate, studentgender) {
+                   
+                    return $q(function (resolve, reject) {
+                        var studentobj = {
+                            rollNo: studentrollno,
+                            name: studentname,
+                            email: studentemail,
+                            age: studentage,
+                            date: studentdate,
+                            isMale: studentgender
+                        }
+ 
+                        $http({
+                            method: 'POST',
+                            url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students",
+                            data: studentobj
+ 
+                        }).then(function success(response) {
+                            alert("added successfully")
+                            resolve(response.data);
+ 
+                        }), function error(response) {
+                            console.log(response)
+                            reject(response)
+                        }
+                     
+                    })
+                }
+
+                studentfactory.deletestudent = function (id) {
+                    return $q(function (resolve, reject) {
+                        $http({
+                            method: 'DELETE',
+                            url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students/" + id
+                        }).then(function success(response) {
+                            alert("deleted successfully")
+                            resolve(response.data);
+                        }), function error(response) {
+                            reject(response)
+                        }
+                    })
+                }
+                studentfactory.getbackdata = function (id) {
+                    return $q(function (resolve, reject) {
+                         $http({
+                                method: 'GET',
+                                 url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students/" + id
+                         }).then(function success(response) {
+                             resolve(response.data);
+                         }), function error(response) {
+                             reject(response)
+                        }
+                    })
+                }
+                studentfactory.updatestudent = function(id, studentname, studentrollno, studentemail, studentage, studentdate, studentgender)
+                {
+                    return $q(function (resolve, reject) {
+                        var studentobj = {
+                            id:id,
+                            rollNo: studentrollno,
+                            name: studentname,
+                            email: studentemail,
+                            age: studentage,
+                            date: studentdate,
+                            isMale: studentgender
+                        }
+                         $http({
+                                method: 'PUT',
+                                 url: "http://gsmktg.azurewebsites.net:80/api/v1/techlabs/test/students/" + id,
+                                 data: studentobj
+                         }).then(function success(response) {
+                            alert("updated successfully")
+                             resolve(response.data);
+                         }), function error(response) {
+                             reject(response)
+                        }
+                    })
+                }
+
+ 
+                return studentfactory;
+            }]).controller('getstudentcontroller', ['$scope', '$rootScope', 'getstudentservice', function ($scope, $rootScope, getstudentservice) {
+                $scope.loadData = function () {
+                    $scope.isAdd = false;
+                    $scope.isUpdate = true;
+                    $scope.noofstudent;
+                    getstudentservice.getdata().then(function (result) {
+                        $scope.result = result
+                        $scope.noofstudent = result.length
+                    })
+                }
+                $scope.radiocheck = function (event) {
+                    console.log(event.target.id)
+                    if (event.target.id == "Male")
+                        $scope.ismale = "true";
+                    else
+                        $scope.ismale = "false";
+                }
+                $scope.addstudent = function () {
+                 //   if($scope.studentname !=null &&  $scope.studentrollno != null &&  $scope.studentemail !=null && $scope.studentage != null && $scope.studentdate != null && $scope.ismale!= null )
+                 //   {
+                        $scope.isAdd = false;
+                    $scope.isUpdate = true;
+                    if ($scope.gendervalue == "male")
+                        $scope.ismale = true
+                    else
+                        $scope.ismale = false
+                    getstudentservice.addstudent($scope.studentname, $scope.studentrollno,  $scope.studentemail, $scope.studentage,$scope.studentdate, $scope.ismale).then(function (result) {
+                        console.log(result)
+                     
+                        $scope.loadData()
+                        clear()
+                    })
+                  //  }
+                   // else 
+                   // {
+                     //   alert("please fill all details ..!!")
+                   // }
+                  
+                }
+
+                $scope.deleteData = function (event) {
+                    var flag = confirm("Are u sure u want to delete user detail of " +event.target.id)
+                    if(flag)
+                    {
+                        console.log(event.target.id)
+                        getstudentservice.deletestudent(event.target.id).then(function (result) {
+                        console.log(result)
+                        $scope.loadData()
+                    })
+                    }
+                   
+                }
+                $scope.index;
+                $scope.editData = function (event) {
+                    $scope.isAdd = true;
+                    $scope.isUpdate = false;
+                    getstudentservice.getbackdata(event.target.id).then(function (result) {
+                            $scope.index = result[0].id
+                            $scope.studentname = result[0].name
+                            $scope.studentrollno = result[0].rollNo
+                            var newdate = new Date(result[0].date)
+                            $scope.studentdate = newdate
+                            $scope.studentemail = result[0].email
+                            $scope.studentage = result[0].age
+                            console.log(result[0].isMale)
+                            if (result[0].isMale == true)
+                            $scope.Male = true
+                        else if (result[0].isMale == false)
+                            $scope.Female = true
+                           
+                    })
+                }
+                $scope.updatestudent=function(){
+                    if ($scope.gendervalue == "male")
+                        $scope.ismale = true
+                    else
+                        $scope.ismale = false
+                    getstudentservice.updatestudent($scope.index,$scope.studentname, $scope.studentrollno,  $scope.studentemail, $scope.studentage,$scope.studentdate, $scope.ismale).then(function (result) {
+                        console.log(result)
+                     
+                        $scope.loadData()
+                        clear()
+                    })
+                }
+                
+            function clear()
+            {
+                 $scope.studentname=null;
+                 $scope.studentrollno=null;
+                 $scope.studentdate=null;
+                 $scope.studentemail=null;
+                 $scope.studentage=null;
+                 $scope.gender=null;
+            }
+            }])
+            
+ 
+    </script>
+</body>
+ 
+</html>

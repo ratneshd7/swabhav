@@ -7,7 +7,13 @@ import { Component } from '@angular/core';
 })
 export class WelcomeComponent {
   message:String;
+  states:String
   constructor(){
   this.message="Welcome to angular 8"
   }
+  stateChangeEventHandler(e){
+    console.log(e)
+    this.states=e;
+  }
+
 }

@@ -1,0 +1,28 @@
+<div class="card container">
+     <h3 class="card-header">Product Details</h3>
+
+     <div ng-model="result" style="font-size: 20px">
+            <img ng-src="{{result.imageUrl}}"  style="float: right;">
+            <p>Name:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{{result.productName}}</p>
+            <p>Code:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{{result.productCode}}</p>
+            <p>Description:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{{result.description}}</p>
+            <p>Availibility:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{{result.releaseDate}}</p>
+            <p>Price:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{{result.price |  currency}}</p>
+            <p>5 Star Rating:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span><star ng-bind-html=" result.starRating | Starfilter "></star>
+                {{result.starRating}}</p>
+            <!-- <div style="align-content: center"> -->
+           
+            <!-- </div> -->
+            <!-- img {
+                width: 300px; height: 300px;
+                border: 1px solid black;
+                margin: 5px 10px 10px 0px;
+            } -->
+     </div>
+       <br>
+       <br>
+       <br>
+     <div>
+         <button class="btn btn-primary " ng-click="back()"> <span><p class="glyphicon glyphicon-chevron-left"></p></span> Back</button>
+     </div>
+</div>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    </head>
+<style>
+    .table {
+        border: 1px solid black;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th {
+        text-align: left;
+    }
+</style>
+
+<body ng-app="emphierachy">
+    <div ng-controller="tablecontroller">
+        <table class="table" id="table">
+            <thead>
+                <tr>
+                    <th>Id </th>
+                    <th>Name </th>
+                    <th>Designation</th>
+                    <th>Manager ID</th>
+                    <th>DOB</th>
+                    <th>Salary</th>
+                    <th>Comission</th>
+                    <th>DepartmentNO</th>
+                </tr>
+                <tr ng-repeat='employee in empdetails'>
+                    <td>{{employee.empid}}</td>
+                    <td>{{employee.name}}</td>
+                    <td>{{employee.designation}}</td>
+                    <td>{{employee.managerid}}</td>
+                    <td>{{employee.dob|date: dd/mm/yyyy}}</td>
+                    <td>{{employee.salary}}</td>
+                    <td>{{employee.comission}}</td>
+                    <td>{{employee.deptno}}</td>
+
+
+                </tr>
+
+            </thead>
+        </table>
+        <div style='margin-left:500px'>
+            <p>President</p>
+            <input type="button" value='+' id="add" ng-click="President()"
+                class="glyphicon glyphicon-remove btn btn-danger visible-lg">
+        </div>
+        <table>
+            <tr>
+                <td ng-hide='isshowM' ng-repeat='employee in hierarchy'>
+
+                    {{employee.name}}
+                    <input type="button" value='+' id="edit" ng-click="Manager(employee.empid)"
+                        class="btn btn-info visible-lg">
+                </td>
+
+            </tr>
+
+            <tr>
+                <td ng-hide='isshowS' ng-repeat='employee in hierarchyM'>
+
+                    {{employee.name}}
+                    <input type="button" value='+' id="edit" ng-click="Salesman(employee.empid)"
+                        class="btn btn-info visible-lg">
+                </td>
+
+            </tr>
+            <tr>
+                <td ng-hide='isshowA' ng-repeat='employee in hierarchyS'>
+
+                    {{employee.name}}
+                    <input type="button" value='+' id="edit" ng-click="Analyst(employee.empid)"
+                        class="btn btn-info visible-lg">
+                </td>
+
+            </tr>
+
+        </table>
+    </div>
+    </div>
+
+</body>
+<script src="angular.js"></script>
+<script>
+    var app = angular.module('emphierachy', [])
+        .factory('getservices', function ($q, $log, $rootScope, $http) {
+            var object = {}
+            object.getemployeedetails = function () {
+                return $q(function (resolve, reject) {
+                    $http({
+                        method: 'Get',
+                        url: "https://api.myjson.com/bins/xvwar"
+                    }).then(function Success(response) {
+                        // console.log(response.data)
+                        resolve(response.data)
+                    }), function myError(response) {
+                        $rootScope.details = response.statusText
+                        reject(response.statusText)
+
+                    }
+                })
+
+            }
+            return object
+        })
+        .controller('tablecontroller', function ($scope, $rootScope, getservices) {
+            getservices.getemployeedetails().then(function (result) {
+                $scope.empdetails = result;
+                console.log($scope.empdetails);
+                var emptable = $scope.empdetails;
+                $rootScope.isshowM = true;
+                $scope.President = function () {
+                    var id = 7839
+                    if ($rootScope.isshowM == true) {
+                        $rootScope.isshowM = false;
+                    }
+                    else if ($rootScope.isshowM == false) {
+                        $rootScope.isshowM = true;
+                    }
+                    $rootScope.hierarchy = [];
+                    for (i = 0; i < emptable.length; i++) {
+                        if (id == emptable[i].managerid) {
+                            $rootScope.hierarchy.push(emptable[i]);
+
+                        }
+
+                    }
+                    console.log($rootScope.hierarchy)
+
+                }
+                $rootScope.isshowS = true;
+                $scope.Manager = function (id) {
+                    if ($rootScope.isshowS == true) {
+                        $rootScope.isshowS = false;
+                    }
+                    else if ($rootScope.isshowS == false) {
+                        $rootScope.isshowS = true;
+                    }
+
+                    console.log($rootScope.hierarchyM);
+
+
+                    console.log(id);
+                    $rootScope.hierarchyM = [];
+                    for (i = 0; i < emptable.length; i++) {
+                        if (id == emptable[i].managerid) {
+                            $rootScope.hierarchyM.push(emptable[i]);
+
+                        }
+
+                    }
+
+
+                }
+                $rootScope.isshowA = true;
+                $scope.Salesman = function (id) {
+                    if ($rootScope.isshowA == true) {
+                        $rootScope.isshowA = false;
+                    }
+                    else if ($rootScope.isshowA == false) {
+                        $rootScope.isshowA = true;
+                    }
+                    console.log(id);
+                    $rootScope.hierarchyS = [];
+                    for (i = 0; i < emptable.length; i++) {
+                        if (id == emptable[i].managerid) {
+                            $rootScope.hierarchyS.push(emptable[i]);
+
+                        }
+
+                    }
+                    console.log($rootScope.hierarchyS);
+
+
+                }
+                $scope.Analyst = function (id) {
+                    console.log(id);
+                    $rootScope.hierarchyS = [];
+                    for (i = 0; i < emptable.length; i++) {
+                        if (id == emptable[i].managerid) {
+                            $rootScope.hierarchyS.push(emptable[i]);
+
+                        }
+
+                    }
+                    console.log($rootScope.hierarchyS);
+
+                }
+
+
+
+
+            })
+
+        })
+</script>
+
+</html>

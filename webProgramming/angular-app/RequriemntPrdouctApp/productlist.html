@@ -1,0 +1,36 @@
+<div class="card container">
+        Filter By : <input type="text" ng-keypress="getkeys()" placeholder="Search by product"
+        ng-model="searchText" />
+        <div ng-show="isfilter">
+            Filter By: <p style="display: inline">{{searchText}}</p>
+        </div>
+       
+    <h3 class="card-header">Product List</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th><button class="btn btn-primary" ng-click="toggleButton()">{{buttonstatus}}</button></th>
+                <th>Product</th>
+                <th>Code</th>
+                <th>Available</th>
+                <th>Price</th>
+                <th>5 Star Rating</th>
+
+            </tr>
+        </thead>
+        <tbody ng-repeat="data in result  | filter:searchText">
+            <td><img ng-src="{{data.imageUrl}}" width="100" height="100" ng-show="isVisible"></td>
+            <td><a href="#!/productdescription/{{data.productName}}">{{data.productName}}</a></td>
+            <td>{{data.productCode}}</td>
+            <td>{{data.releaseDate}}</td>
+            <td>{{data.price |  currency}}</td>
+            
+            <td>
+                    <star ng-bind-html=" data.starRating | Starfilter "></star>
+                    {{data.starRating}}
+                </td>
+        </tbody>
+        
+
+    </table>
+</div>

@@ -1,0 +1,46 @@
+  <div class="card container">
+
+  <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Product List</h3>
+      </div>
+      <div class="panel-body">
+
+        Filter By : <input type="text" placeholder="Search by product" [(ngModel)]="searchText" />
+        <div *ngIf="isfilter">
+            Filter By: <p style="display: inline">{{searchText}}</p>
+        </div>
+
+
+        <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th><button class="btn btn-primary" (click)="toggleButton()">{{buttonstatus}}</button></th>
+                  <th>Product</th>
+                  <th>Code</th>
+                  <th>Available</th>
+                  <th>Price</th>
+                  <th>5 Star Rating</th>
+
+              </tr>
+          </thead>
+          <tbody *ngFor="let data of result | textfilter : searchText">
+              <td><img [src]='data.imageUrl' *ngIf='status' width="100" height="100" ng-show="isVisible"></td>
+              <td><a [routerLink]="['/productdetail',data.productCode]">{{data.productName}}</a></td>
+              <td>{{data.productCode}}</td>
+              <td>{{data.releaseDate}}</td>
+              <td>{{data.price |  currency}}</td>
+
+              <td>
+                <star-button  [rating]='data.starRating'></star-button>
+                      {{data.starRating}}
+                  </td>
+          </tbody>
+
+
+      </table>
+
+      </div>
+  </div>
+</div>
+

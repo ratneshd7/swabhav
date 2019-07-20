@@ -1,0 +1,27 @@
+<div class="card container">
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Product Detail</h3>
+    </div>
+    <div class="panel-body">
+      <div >
+        <img [src]='result.imageUrl'  style="float: right;">
+        <p style="font-size: 20px">Name:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{{result.productName}}</p>
+        <p style="font-size: 20px">Code:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{{result.productCode}}</p>
+        <p style="font-size: 20px">Description:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{{result.description}}</p>
+        <p style="font-size: 20px">Availibility:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{{result.releaseDate}}</p>
+        <p style="font-size: 20px">Price:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{{result.price |  currency}}</p>
+        <p style="font-size: 14px">5 Star Rating:<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <star-button  [rating]='result.starRating'></star-button>{{result.starRating}}</p>
+ </div>
+<br>
+    <br>
+   <br>
+ <div>
+     <button class="btn btn-primary " (click)="back()"> <span><p class="glyphicon glyphicon-chevron-left"></p></span> Back</button>
+ </div>
+
+    </div>
+</div>
+</div>

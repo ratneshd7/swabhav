@@ -5,4 +5,12 @@
   <h1>{{name || 'Ratnesh'}}</h1>
 
   <h1>{{student ? student.name:'Ratnesh' | uppercase}}</h1>
+<br>
+  <div>
+<br>
+    <toggle-button [textValue]='"Toggle"' [onStateColor]='"green"' [offStateColor]='"red"' (stateChanged)="stateChangeEventHandler($event)"></toggle-button>{{states}}
+  </div>
+  <div>
+    <star-button [rating]='"4.3"'></star-button>
+  </div>
 </section>

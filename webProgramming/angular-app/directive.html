@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Directive</title>
+    <script src="angular.js"></script>
+    <script src="angular-route.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body ng-app="directive-app">
+    <h1>custom directive</h1>
+
+    <div  aurionpro-Header>
+
+    </div>
+    <div aurionpro-Footer>
+
+    </div>
+    <aurionproHeader>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Id, alias magnam! Quam quis necessitatibus neque repudiandae officiis rerum, dolorum voluptas? Neque rerum ipsa, odio consequatur repellat totam asperiores recusandae eos.</p>
+    </aurionproHeader>
+    <aurionproFooter>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus quibusdam hic temporibus atque molestias saepe amet adipisci quasi beatae. Autem explicabo illum dicta sequi ratione quia nobis, quo voluptas atque!</p>
+    </aurionproFooter>
+    <script>
+        angular.module('directive-app', [])
+            .directive('aurionproHeader', function () {
+                return {
+
+                    template: '<header>Aurionpro Header</header>'
+                }
+            }).directive('aurionproFooter', function () {
+                return {
+                    template: '<footer>Aurionpro Footer</footer>'
+                }
+            })
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+
+<body ng-app="emphierachy">
+    <div ng-controller="tablecontroller">
+
+
+        <ul>
+            <li>
+                <p>President</p> <input type="button" value='+' id="add" ng-click="President()"
+                    class="glyphicon glyphicon-remove btn btn-info ">
+            </li>
+        </ul>
+        <ul ng-hide='isshowM' ng-repeat='employee in hierarchy'>
+            <li>
+                    {{employee.name}}
+            </li>
+               <input type="button" value='+' id="edit" ng-click="Manager(employee.empid)"
+                    class="btn btn-info "> 
+        </ul>
+        <ul>
+            <li ng-hide='isshowS' ng-repeat='employee in hierarchyM'> {{employee.name}} <input type="button" value='+'
+                    id="edit" ng-click="Salesman(employee.empid)" class="btn btn-info "></li>
+        </ul>
+        <ul>
+            <li ng-hide='isshowS' ng-repeat='employee in hierarchyS'> {{employee.name}} <input type="button" value='+'
+                    id="edit" ng-click="Analyst(employee.empid)" class="btn btn-info"></li>
+        </ul>
+    </div>
+
+
+<script src="angular.js"></script>
+<script>
+    var app = angular.module('emphierachy', [])
+        .factory('getservices', function ($q, $log, $rootScope, $http) {
+            var object = {}
+            object.getemployeedetails = function () {
+                return $q(function (resolve, reject) {
+                    $http({
+                        method: 'Get',
+                        url: "https://api.myjson.com/bins/xvwar"
+                    }).then(function Success(response) {
+                        // console.log(response.data)
+                        resolve(response.data)
+                    }), function myError(response) {
+                        $rootScope.details = response.statusText
+                        reject(response.statusText)
+                    }
+                })
+
+            }
+            return object
+        })
+        .controller('tablecontroller', function ($scope, $rootScope, getservices) {
+            getservices.getemployeedetails().then(function (result) {
+                $scope.empdetails = result;
+                console.log($scope.empdetails);
+                var emptable = $scope.empdetails;
+                $rootScope.isshowM = true;
+                $scope.President = function () {
+                    var id = 7839
+                    if ($rootScope.isshowM == true) {
+                        $rootScope.isshowM = false;
+                    }
+                    else if ($rootScope.isshowM == false) {
+                        $rootScope.isshowM = true;
+                    }
+                    $rootScope.hierarchy = [];
+                    for (i = 0; i < emptable.length; i++) {
+                        if (id == emptable[i].managerid) {
+                            $rootScope.hierarchy.push(emptable[i]);
+                        }
+                    }
+                    console.log($rootScope.hierarchy)
+                }
+                $rootScope.isshowS = true;
+                $scope.Manager = function (id) {
+                    if ($rootScope.isshowS == true) {
+                        $rootScope.isshowS = false;
+                    }
+                    else if ($rootScope.isshowS == false) {
+                        $rootScope.isshowS = true;
+                    }
+
+                    console.log($rootScope.hierarchyM);
+                    console.log(id);
+                    $rootScope.hierarchyM = [];
+                    for (i = 0; i < emptable.length; i++) {
+                        if (id == emptable[i].managerid) {
+                            $rootScope.hierarchyM.push(emptable[i]);
+                        }
+                    }
+                }
+                $rootScope.isshowA = true;
+                $scope.Salesman = function (id) {
+                    if ($rootScope.isshowA == true) {
+                        $rootScope.isshowA = false;
+                    }
+                    else if ($rootScope.isshowA == false) {
+                        $rootScope.isshowA = true;
+                    }
+                    console.log(id);
+                    $rootScope.hierarchyS = [];
+                    for (i = 0; i < emptable.length; i++) {
+                        if (id == emptable[i].managerid) {
+                            $rootScope.hierarchyS.push(emptable[i]);
+                        }
+                    }
+                    console.log($rootScope.hierarchyS);
+                }
+                $scope.Analyst = function (id) {
+                    console.log(id);
+                    $rootScope.hierarchyS = [];
+                    for (i = 0; i < emptable.length; i++) {
+                        if (id == emptable[i].managerid) {
+                            $rootScope.hierarchyS.push(emptable[i]);
+
+                        }
+                    }
+                    console.log($rootScope.hierarchyS);
+                }
+            })
+
+        })
+</script>
+</body>
+
+</html>

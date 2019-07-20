@@ -19,6 +19,7 @@ console.log(r)
 .catch((err) => {
   console.log(err.error.text)
 });
+this.value=null;
 }
 
 }

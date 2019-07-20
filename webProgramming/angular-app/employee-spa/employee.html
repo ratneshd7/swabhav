@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="/angular-app/angular.js"></script>
+    <script src="/angular-app/angular-route.js"></script>
+    <script src="employeeapp.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body ng-app="employee-spa" class="container">
+    <div class="jumbotron text-center">
+        <h2>Employee Details</h2>
+    </div>
+   <br><br> <h4> <a href="#!/">Home</a> <span>&nbsp;&nbsp;</span>
+  <a href="#!/add">Add</a><span>&nbsp;&nbsp;</span> <button ng-hide="islogged" ng-click="logout()" class="btn btn-info">Logout</button> </h4>
+  <!-- <a href="#!/login">Login</a> -->
+    <article ng-view> 
+
+    </article>
+</body>
+
+</html>

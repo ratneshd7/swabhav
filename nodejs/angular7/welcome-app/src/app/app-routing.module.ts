@@ -6,6 +6,8 @@ import { MultibindComponent } from './multibind/multibind.component';
 import { BlueballComponent } from './Blueball/bluball.component';
 import { EvenNo } from './services/evenno.component';
 import { NumberApi } from './numberapi/numberapi.component';
+import { StarButton } from './star/star.component';
+
 
 
 const routes: Routes = [{path:'welcome',component:WelcomeComponent},
@@ -14,7 +16,8 @@ const routes: Routes = [{path:'welcome',component:WelcomeComponent},
                         {path:'blueball',component:BlueballComponent},
                         {path:'evenno',component:EvenNo},
                         {path:'numberapi',component:NumberApi},
-                      {path:'',component:WelcomeComponent}];
+                        {path:'stars',component:StarButton},
+                        {path:'',component:WelcomeComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

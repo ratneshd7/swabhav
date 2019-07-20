@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Acme Product Management</title>
+   
+    <script src="/angular-app/angular.js"></script>
+    <script src="/angular-app/angular-route.js"></script>
+    
+    <script src="angular-sanitize.js"></script>
+    <script src="acmeapp.js"></script>
+   
+  
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="font-awesome.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  
+</head>
+
+<body ng-app="acme-spa" class="container">
+
+    <div>
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li><a class="navbar-brand" href="#">Acme Product Management</a></li>
+                    <li><a href="#!/">Home</a></li>
+                    <li><a href="#!/productlist">Product List</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+        
+        
+        
+    <style>
+            span.stars,
+                  span.stars span {
+                      display: block;
+                      background: url('https://apppresser.com/wp-content/uploads/2015/11/stars.png') 0 -16px repeat-x;
+                      width: 80px;
+                      height: 16px;
+                  }
+                  span.stars span {
+                      background-position: 0 0;
+                  }
+          </style>
+        
+       
+              
+    <article ng-view>
+
+    </article>
+    
+</body>
+
+</html>

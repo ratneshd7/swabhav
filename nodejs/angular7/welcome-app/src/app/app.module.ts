@@ -11,7 +11,11 @@ import { BlueballComponent } from './Blueball/bluball.component';
 import { MathService, EvenNo } from './services/evenno.component';
 import { NumberApi } from './numberapi/numberapi.component';
 import { ApiHttp } from './numberapi/apihttp.component';
-import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
+import { ToggleButton } from './button/toggle.component';
+import { StarButton } from './star/star.component';
+import { SnakeCase } from './custompipe/snakeCase.pipe';
+
 
 @NgModule({
   declarations: [
@@ -21,7 +25,10 @@ import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
     MultibindComponent,
     BlueballComponent,
     EvenNo,
-    NumberApi
+    NumberApi,
+    ToggleButton,
+    StarButton,
+    SnakeCase
 
   ],
   imports: [

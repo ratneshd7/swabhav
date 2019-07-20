@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Employee DB Service</title>
+    <script src="/angular-app/angular.js"></script>
+    <script src="/angular-app/angular-route.js"></script>
+    <script src="empapp.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body ng-app="emp-spa" class="container">
+    <div class="jumbotron text-center" ng-hide="islogged" >
+        <h2>Employee DB Service</h2>
+        <p>
+            Click Here For Login
+        </p>
+        <h3> <a href="#!/login">Login</a></h3>
+    </div>
+    <div ng-show="isout">
+        <div class="jumbotron text-center" ng-show="isout">
+            <h2>Employee DB Service</h2>
+            <p>
+                Click Here For Logout
+            </p>
+            <button ng-click="logout()" class="btn btn-warning">Log Out</button>
+
+        </div>
+
+        <div>
+           <h3><p>Logged User: {{loggedusers}}</p></h3> 
+            <h4> <a href="#!/home">Home</a> <span>&nbsp;&nbsp;</span>
+                <a href="#!/add">Add</a><span>&nbsp;&nbsp;</span></h4>
+        </div>
+    </div>
+    <br><br>
+    <article ng-view>
+
+    </article>
+</body>
+
+</html>

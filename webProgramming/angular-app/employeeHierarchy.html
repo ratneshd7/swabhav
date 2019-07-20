@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Employee hierarchy</title>
+</head>
+
+<body ng-app="empHierarchy">
+
+    <div ng-controller="hierarchyController">
+        <!-- <p>{{hierarchy}}</p> -->
+    </div>
+
+    <script src="angular.js"></script>
+    <script>
+        angular.module('empHierarchy', [])
+            .factory('empHierarchyService', ['$q', '$http', function ($q, $http) {
+                var treeservice = {}
+                treeservice.getEmployeeData = function () {
+                    return $q(function (resolve, reject) {
+                        $http({
+                            method: 'GET',
+                            url: 'https://api.myjson.com/bins/1eqc37'
+                        }).then(function (response) {
+
+                            resolve(response)
+                        })
+                    })
+                }
+                treeservice.getEmployeeUnderMangerID = function (empid, data) {
+                    emp = [];
+                    for (var index = 0; index < data.length; index++) {
+                        if (empid == data[index].managerid) {
+                            emp.push(data[index])
+                        }
+                    }
+                    return emp;
+                }
+                return treeservice;
+            }]).controller('hierarchyController', ['empHierarchyService', '$scope', '$rootScope', function (empHierarchyService, $scope, $rootScope) {
+                president = {}
+                empHierarchyService.getEmployeeData().then((result) => {
+                    var data = result.data;
+                    for (index = 0; index < data.length; index++) {
+                        if (data[index].managerid == 'NULL') {
+                            president = data[index]
+                            break;
+                        }
+                    }
+                    employee = empHierarchyService.getEmployeeUnderMangerID(president.empid, data)
+
+                    president['empUnderme'] = employee;
+
+                    pre = president;
+
+                    function underMeFunction(obj) {
+
+                        if (obj.empUnderme.length != 0) {
+                            manager = obj.empUnderme;
+                            for (var index1 = 0; index1 < manager.length; index1++) {
+                                manager[index1]['empUnderme'] = empHierarchyService.getEmployeeUnderMangerID(manager[
+                                    index1].empid, data)
+                            }
+                            for (var ind = 0; ind < manager.length; ind++) {
+                                underMeFunction(manager[ind])
+                            }
+
+                        }
+
+                    }
+
+                    underMeFunction(president);
+                    console.log(president)
+                   // $scope.hierarchy=president;
+                })
+
+
+            }])
+    </script>
+</body>
+
+</html>
